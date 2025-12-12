@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function App(){
+function App() {
   const [projects] = useState([
     {
       id: 'eng3303proj4',
@@ -11,19 +11,19 @@ function App(){
     {
       id: 'fibersync',
       title: 'FiberSync',
-      description: 'A full-stack web messenger application that uses its own Mongo server to store and retrieve messages, built with React, Node.js, and MongoDB.',
+      description: 'A full-stack web messenger application hosted on Firebase. It uses its own Mongo server to store and retrieve messages, and it is built with React, Node.js, and MongoDB.',
       link: 'https://fibersync-fd2e2.web.app/'
     }
   ]);
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
-  useEffect(()=>{
+  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  function handleContactSubmit(e){
+  function handleContactSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value.trim();
@@ -40,7 +40,7 @@ function App(){
           <h1 className="brand">Caden Dengel</h1>
           <div className="controls">
             <a className="resume-link" href="/img/Caden_Dengel_Resume.pdf" download>Download Resume</a>
-            <button className="theme-toggle" onClick={()=>setTheme(t => t==='light' ? 'dark' : 'light')}>
+            <button className="theme-toggle" onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>
               {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
             </button>
           </div>
