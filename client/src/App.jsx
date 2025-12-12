@@ -1,7 +1,6 @@
-const { useState, useEffect } = React;
+import { useEffect, useState } from 'react'
 
 function App(){
-  // initial project list — modular and easy to add more
   const [projects] = useState([
     {
       id: 'eng3303proj4',
@@ -30,7 +29,6 @@ function App(){
     const name = form.name.value.trim();
     const subject = encodeURIComponent(form.subject.value.trim() || 'Website contact');
     const message = encodeURIComponent(`Name: ${name}%0D%0A%0D%0A` + form.message.value.trim());
-    // open mail client (mailto) — populates your email
     const mailto = `mailto:caden.d.dengel@gmail.com?subject=${subject}&body=${message}`;
     window.location.href = mailto;
   }
@@ -41,8 +39,9 @@ function App(){
         <div className="container">
           <h1 className="brand">Caden Dengel</h1>
           <div className="controls">
-            <a className="resume-link" href="./img/Caden_Dengel_Resume.pdf" download>Download Resume</a>
-            <button className="theme-toggle" onClick={()=>setTheme(t => t==='light' ? 'dark' : 'light')}> {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+            <a className="resume-link" href="/img/Caden_Dengel_Resume.pdf" download>Download Resume</a>
+            <button className="theme-toggle" onClick={()=>setTheme(t => t==='light' ? 'dark' : 'light')}>
+              {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
             </button>
           </div>
         </div>
@@ -66,7 +65,7 @@ function App(){
             </div>
 
             <div className="hero-image">
-                <img src="./img/Profile_Picture.jpg" alt="Profile picture" />
+              <img src="/img/Profile_Picture.jpg" alt="Profile" />
             </div>
           </div>
         </section>
@@ -115,4 +114,4 @@ function App(){
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+export default App
