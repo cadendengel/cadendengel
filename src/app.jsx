@@ -6,8 +6,14 @@ function App(){
     {
       id: 'eng3303proj4',
       title: 'ENG3303Proj4',
-      description: 'Course project — hosted on Amazon AWS. Replace the link with your live AWS URL.',
+      description: 'Course project hosted on Amazon AWS. Displays a redesign of the GitHub repo page.',
       link: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html'
+    },
+    {
+      id: 'fibersync',
+      title: 'FiberSync',
+      description: 'A full-stack web messenger application that uses its own Mongo server to store and retrieve messages, built with React, Node.js, and MongoDB.',
+      link: 'https://fibersync-fd2e2.web.app/'
     }
   ]);
 
@@ -35,8 +41,9 @@ function App(){
         <div className="container">
           <h1 className="brand">Caden Dengel</h1>
           <div className="controls">
-            <a className="resume-link" href="./Caden_Dengel_Resume.pdf" download>Download Resume</a>
-            <button className="theme-toggle" onClick={()=>setTheme(t => t==='light' ? 'dark' : 'light')}>Toggle Light/Dark Mode</button>
+            <a className="resume-link" href="./img/Caden_Dengel_Resume.pdf" download>Download Resume</a>
+            <button className="theme-toggle" onClick={()=>setTheme(t => t==='light' ? 'dark' : 'light')}> {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+            </button>
           </div>
         </div>
       </header>
@@ -46,9 +53,9 @@ function App(){
           <div className="container hero-grid">
             <div className="hero-text">
               <h2>Web Developer & Student</h2>
-              <p className="lead">I&apos;m Caden — a soon-to-be graduate pursuing a web developer role. I build full-stack projects and enjoy making responsive, accessible web apps.</p>
+              <p className="lead">I&apos;m Caden, a Computer Science graduate pursuing a web developer role. I build full-stack projects and enjoy making responsive, accessible web apps.</p>
               <p>
-                <a className="primary-btn" href="#projects">See projects</a>
+                <a className="primary-btn" href="#projects">Projects</a>
                 <a className="secondary-btn" href="#contact">Contact</a>
               </p>
               <p className="socials">
@@ -59,14 +66,14 @@ function App(){
             </div>
 
             <div className="hero-image">
-                <img src="https://i.imgur.com/ZK3ZqWV.jpeg" alt="Profile picture" />
+                <img src="./img/Profile_Picture.jpg" alt="Profile picture" />
             </div>
           </div>
         </section>
 
         <section id="about" className="container about">
           <h3>About</h3>
-          <p>I am currently a student finishing my B.S. in Computer Science at Texas State University. I am looking for web development roles. I enjoy building modular projects and deploying them to cloud platforms such as AWS.</p>
+          <p>I am graduating with my B.S. in Computer Science from Texas State University. I am looking for web development roles. I enjoy building modular projects with REACT, Node.js, Python, and other useful, modern technologies.</p>
         </section>
 
         <section id="projects" className="container projects">
