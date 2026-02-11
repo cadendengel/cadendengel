@@ -37,6 +37,7 @@ body{
   color:var(--text);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  transition: background-color .25s ease, color .25s ease;
 }
 
 .container{max-width:var(--container-max-width);margin:0 auto;padding:var(--gutter)}
@@ -48,6 +49,17 @@ body{
 .resume-link:focus{outline:3px solid rgba(0,0,0,0.06)}
 .theme-toggle{padding:.45rem .6rem;border-radius:6px;border:1px solid var(--muted);background:transparent;cursor:pointer;color:var(--text)}
 .theme-toggle:focus{outline:3px solid rgba(0,0,0,0.06)}
+
+.site-header,
+.project-card,
+.contact-form input,
+.contact-form textarea,
+.primary-btn,
+.secondary-btn,
+.resume-link,
+.theme-toggle{
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
 
 .hero{padding:3.5rem 0}
 .hero-grid{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:center}
