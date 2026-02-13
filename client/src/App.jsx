@@ -3,16 +3,28 @@ import { useEffect, useState } from 'react'
 function App() {
   const [projects] = useState([
     {
-      id: 'eng3303proj4',
-      title: 'ENG3303Proj4',
-      description: 'Course project hosted on Amazon AWS. Displays a redesign of the GitHub repo page.',
-      link: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html'
-    },
-    {
       id: 'fibersync',
       title: 'FiberSync',
       description: 'A full-stack web messenger application hosted on Firebase. It uses its own Mongo server to store and retrieve messages, and it is built with React, Node.js, and MongoDB.',
       link: 'https://fibersync-fd2e2.web.app/'
+    },
+    {
+      id: 'visionary',
+      title: 'Visionary',
+      description: 'An OpenCV-based video processing application based in Python that uses a pre-trained YOLOv5 model to detect and track objects with a laser pointer in real-time using servos.',
+      link: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary'
+    },
+    {
+      id: 'mle-healthcare-extension',
+      title: 'MLE Healthcare Extension',
+      description: 'An extension of an healthcare encryption algorithm that is modified to be compatible with different datasets. It is built with C# and python, using pandas, numpy, and scikit-learn for dataset training.',
+      link: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension'
+    },
+    {
+      id: 'eng3303proj4',
+      title: 'Github Accessibility Redesign',
+      description: 'Course project hosted on Amazon AWS. Displays a redesign of the GitHub repo page.',
+      link: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html'
     }
   ]);
 
@@ -95,7 +107,7 @@ function App() {
                   <p>{p.description}</p>
                 </div>
                 <div className="project-actions">
-                  <a href={p.link} target="_blank" rel="noreferrer">Open project</a>
+                  <a href={p.link} target="_blank" rel="noreferrer">View project</a>
                 </div>
               </article>
             ))}
