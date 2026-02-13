@@ -28,6 +28,7 @@
 }
 
 *{box-sizing:border-box}
+html,body{scroll-behavior:smooth}
 html,body,#root{height:100%}
 body{
   margin:0;
@@ -82,16 +83,16 @@ body{
 .project-actions a:hover{text-decoration:underline}
 .hint{color:var(--muted);font-size:.9rem;margin-top:.6rem}
 
-.contact{padding:2.5rem 0}
-.contact-form{display:grid;gap:.6rem;max-width:700px}
-.contact-form label{display:block;font-size:.9rem}
-.contact-form input,.contact-form textarea{width:100%;padding:.6rem;border-radius:8px;border:1px solid rgba(0,0,0,0.08);background:var(--card);color:var(--text)}
-.form-actions{margin-top:.4rem}
+
 
 .primary-btn{transition:transform .15s ease}
 .primary-btn:active{transform:translateY(1px)}
 
 .site-footer{padding:2rem 0;border-top:1px solid rgba(0,0,0,0.06);text-align:center;background:transparent}
+.footer-content{display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.footer-contact{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;font-size:.8rem}
+.footer-label{font-weight:700;letter-spacing:.02em;text-transform:uppercase;font-size:.75rem;color:var(--muted)}
+.footer-email{font-size:.9rem;font-weight:700;color:var(--accent);text-decoration:underline}
 
 /* Global link styles — replace browser blues with theme-friendly color */
 a{color:var(--link);text-decoration:none}

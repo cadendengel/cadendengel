@@ -17,21 +17,31 @@ function App() {
   ]);
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const emailAddress = 'caden.d.dengel@gmail.com';
+  const mailSubject = encodeURIComponent('');
+  const mailBody = encodeURIComponent('');
+  const mailtoLink = `mailto:${emailAddress}?subject=${mailSubject}&body=${mailBody}`;
+  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${mailSubject}&body=${mailBody}`;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  function handleContactSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value.trim();
-    const subject = encodeURIComponent(form.subject.value.trim() || 'Website contact');
-    const message = encodeURIComponent(`Name: ${name}%0D%0A%0D%0A` + form.message.value.trim());
-    const mailto = `mailto:caden.d.dengel@gmail.com?subject=${subject}&body=${message}`;
-    window.location.href = mailto;
-  }
+  const handleContactClick = async (event) => {
+    event.preventDefault();
+
+    const popup = window.open(gmailLink, '_blank', 'noopener,noreferrer');
+    if (!popup) {
+      window.location.href = mailtoLink;
+    }
+
+    setTimeout(() => {
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(emailAddress).catch(() => {});
+      }
+    }, 800);
+  };
 
   return (
     <div className="site-wrap">
@@ -52,10 +62,10 @@ function App() {
           <div className="container hero-grid">
             <div className="hero-text">
               <h2>Web Developer & Student</h2>
-              <p className="lead">I&apos;m Caden, a Computer Science graduate pursuing a web developer role. I build full-stack projects and enjoy making responsive, accessible web apps.</p>
+              <p className="lead">Hi, I&apos;m Caden, a Computer Science graduate pursuing a web developer role. I enjoy building web apps, working with databases, and learning new technologies. In my free time, I like to play guitar, relax while fishing, and go to the gym. Life has taught me many things, but some of the relevant core values that I hold high are integrity, perseverance, kindness.</p>
               <p>
                 <a className="primary-btn" href="#projects">Projects</a>
-                <a className="secondary-btn" href="#contact">Contact</a>
+                <a className="secondary-btn" href="#contact">Contact Me</a>
               </p>
               <p className="socials">
                 <a href="https://linkedin.com/in/cadendengel" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -72,7 +82,7 @@ function App() {
 
         <section id="about" className="container about">
           <h3>About</h3>
-          <p>I am graduating with my B.S. in Computer Science from Texas State University. I am looking for web development roles. I enjoy building modular projects with REACT, Node.js, Python, and other useful, modern technologies.</p>
+          <p>I recently graduated with my B.S. in Computer Science from Texas State University. I am looking for web development roles, although I am open to other opportunities. Throughout high school and college, I enjoyed building modular web projects with REACT, Node.js, Python, and other useful, modern technologies. I also have some experience working with C, C++, and Java, including experience in a game development project. However, I do enjoy web design and development, as you can see from some of my projects listed below.</p>
         </section>
 
         <section id="projects" className="container projects">
@@ -92,22 +102,15 @@ function App() {
           </div>
         </section>
 
-        <section id="contact" className="container contact">
-          <h3>Contact</h3>
-          <form className="contact-form" onSubmit={handleContactSubmit}>
-            <label>Name<input name="name" type="text" placeholder="Your name" /></label>
-            <label>Subject<input name="subject" type="text" placeholder="Subject" /></label>
-            <label>Message<textarea name="message" rows="6" placeholder="Write a short message"></textarea></label>
-            <div className="form-actions">
-              <button type="submit" className="primary-btn">Send</button>
-            </div>
-          </form>
-        </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="container">
-          <small>© {new Date().getFullYear()} Caden Dengel — <a href="mailto:caden.d.dengel@gmail.com">caden.d.dengel@gmail.com</a></small>
+      <footer className="site-footer" id="contact">
+        <div className="container footer-content">
+          <div className="footer-contact">
+            <span className="footer-label">Contact Me @</span>
+            <a className="footer-email" href={gmailLink} onClick={handleContactClick}>caden.d.dengel@gmail.com</a>
+          </div>
+          <small>© {new Date().getFullYear()} Caden Dengel</small>
         </div>
       </footer>
     </div>
