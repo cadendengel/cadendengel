@@ -1,18 +1,83 @@
-# React + Vite
+# Caden Dengel - Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My personal portfolio website showcasing my web development projects, technical skills, and professional experience.
 
-Currently, two official plugins are available:
+## Built With
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** - Frontend framework
+- **Vite** - Build tool and dev server
+- **CSS** - Custom styling with CSS variables for theming
+- **JavaScript** - Modern JavaScript features
 
-## React Compiler
+## Features
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Dark/Light theme toggle with localStorage persistence
+- Responsive design
+- Lazy loading
+- SEO-optimized with meta tags and Open Graph
+- Professional project showcase
+- Skills section with categorized technical abilities
 
-Note: This will impact Vite dev & build performances.
+## Development
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## Project Structure
+
+```
+client/
+├── public/
+│   └── img/           # Images and static assets
+├── src/
+│   ├── App.jsx        # Main application component
+│   ├── App.css        # Component-specific styles
+│   ├── index.css      # Global styles and theme variables
+│   └── main.jsx       # Application entry point
+├── index.html         # HTML template
+└── package.json       # Dependencies and scripts
+```
+
+## Deployment
+
+This site can be deployed to any static hosting service:
+
+- Vercel
+- Netlify
+- Firebase Hosting
+- AWS S3 + CloudFront
+- GitHub Pages
+
+## Contact
+
+Caden Dengel - caden.d.dengel@gmail.com
+
+Portfolio: [cadendengel.com](https://cadendengel.com)
+
+LinkedIn: [linkedin.com/in/cadendengel](https://linkedin.com/in/cadendengel)
+
+GitHub: [github.com/cadendengel](https://github.com/cadendengel)
+
+## License
+
+© 2026 Caden Dengel. All Rights Reserved.
+
+The code in this repository is available for viewing and reference purposes only. You may not copy, modify, distribute, or use this code for your own portfolio without explicit written permission. Feel free to learn from the code structure and techniques, but please create your own original work.
