@@ -73,8 +73,8 @@ function App() {
         <section className="hero">
           <div className="container hero-grid">
             <div className="hero-text">
-              <h2>Web Developer & Student</h2>
-              <p className="lead">Hi, I&apos;m Caden, a Computer Science graduate pursuing a web developer role. I enjoy building web apps, working with databases, and learning new technologies. In my free time, I like to play guitar, relax while fishing, and go to the gym. Life has taught me many things, but some of the relevant core values that I hold high are integrity, perseverance, kindness.</p>
+              <h2>Web Developer & Recent Graduate</h2>
+              <p className="lead">Hi, I&apos;m Caden, a Computer Science graduate pursuing a web developer role. I enjoy building web apps, working with databases, and learning new technologies. In my free time, I like to play guitar, relax while fishing, and go to the gym. Life has taught me many things, but some of the relevant core values that I hold high are integrity, perseverance, and kindness.</p>
               <p>
                 <a className="primary-btn" href="#projects">Projects</a>
                 <a className="secondary-btn" href="#contact">Contact Me</a>
