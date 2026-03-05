@@ -14,6 +14,16 @@ function App() {
       image: '/img/fibersync-preview.jpg'
     },
     {
+      id: 'meal-prep-pantry',
+      title: 'Meal Prep Pantry',
+      description: 'Full-stack meal planning app designed for my girlfriend, built in under 2 days with AI assistants. Features recipe, macronutrient, user authentication features. Hosted with Vercel.',
+      link: 'https://meal-prep-pantry.vercel.app/',
+      tech: ['React', 'Node.js', 'MongoDB', 'Vercel', 'Tesseract.js', 'AI Integration'],
+      date: '2026',
+      role: 'Full-Stack Developer',
+      image: '/img/meal-prep-pantry-preview.jpg'
+    },
+    {
       id: 'visionary',
       title: 'Visionary',
       description: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
