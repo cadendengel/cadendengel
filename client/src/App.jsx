@@ -8,27 +8,17 @@ function App() {
       title: 'FiberSync',
       description: 'A full-stack, real-time web messenger application with secure authentication and message persistence. Handles real-time messaging with WebSocket integration.',
       link: 'https://fibersync-fd2e2.web.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Firebase'],
+      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'Render', 'WebSockets', 'Python Unittest', 'Jest', 'Python'],
       date: '2025',
       role: 'Full-Stack Developer',
       image: '/img/fibersync-preview.jpg'
-    },
-    {
-      id: 'meal-prep-pantry',
-      title: 'Meal Prep Pantry',
-      description: 'Full-stack meal planning app designed for my girlfriend, built in under 2 days with AI assistants. Features recipe, macronutrient, user authentication features. Hosted with Vercel.',
-      link: 'https://meal-prep-pantry.vercel.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Vercel', 'Tesseract.js', 'AI Integration'],
-      date: '2026',
-      role: 'Full-Stack Developer',
-      image: '/img/meal-prep-pantry-preview.jpg'
     },
     {
       id: 'visionary',
       title: 'Visionary',
       description: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
       link: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
-      tech: ['Python', 'OpenCV', 'YOLOv5', 'Hardware Integration'],
+      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Hardware Integration'],
       date: '2025',
       role: 'Backend Developer, Hardware Engineer',
       image: '/img/visionary-preview.jpg'
@@ -62,6 +52,16 @@ function App() {
       date: '2026',
       role: 'Full-Stack Developer',
       image: '/img/portfolio-preview.jpg'
+    },
+    {
+      id: 'meal-prep-pantry',
+      title: 'Meal Prep Pantry',
+      description: 'Full-stack meal planning app designed for my girlfriend, built in under 2 days with AI assistants. Features recipe, macronutrient, user authentication features. Hosted with Vercel.',
+      link: 'https://meal-prep-pantry.vercel.app/',
+      tech: ['React', 'Node.js', 'MongoDB', 'Vercel', 'Tesseract.js', 'AI Integration'],
+      date: '2026',
+      role: 'Full-Stack Developer',
+      image: '/img/meal-prep-pantry-preview.jpg'
     }
   ]);
 
