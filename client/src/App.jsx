@@ -6,62 +6,62 @@ function App() {
     {
       id: 'fibersync',
       title: 'FiberSync',
-      description: 'A full-stack, real-time web messenger application with secure authentication and message persistence. Handles real-time messaging with WebSocket integration.',
-      link: 'https://fibersync-fd2e2.web.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'Render', 'WebSockets', 'Python Unittest', 'Jest', 'Python'],
-      date: '2025',
-      role: 'Full-Stack Developer',
+      summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
+      keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
+      challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across network interruptions required careful state management and reconnection logic.',
+      demoLink: 'https://fibersync-fd2e2.web.app/',
       image: '/img/fibersync-preview.jpg'
+    },
+    {
+      id: 'meal-prep-pantry',
+      title: 'Meal Prep Pantry',
+      summary: 'A full-stack web application that automates meal planning using grocery store product data.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
+      keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
+      challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures.',
+      demoLink: 'https://meal-prep-pantry.vercel.app/',
+      image: '/img/meal-prep-pantry-preview.jpg'
     },
     {
       id: 'visionary',
       title: 'Visionary',
-      description: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
-      link: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
-      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Hardware Integration'],
-      date: '2025',
-      role: 'Backend Developer, Hardware Engineer',
+      summary: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
+      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
+      keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
+      challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
+      githubLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
       image: '/img/visionary-preview.jpg'
     },
     {
       id: 'mle-healthcare-extension',
       title: 'MLE Healthcare Extension',
-      description: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
-      link: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
+      summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
       tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
-      date: '2025',
-      role: 'ML Engineer',
+      keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
+      challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required balancing cryptographic security with computational efficiency.',
+      githubLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
       image: '/img/mle-preview.jpg'
     },
     {
       id: 'eng3303proj4',
-      title: 'Github Accessibility Redesign',
-      description: 'Redesigned GitHub repository page with enhanced accessibility features, loosely guided by WCAG 2.1 AA compliance, and improved user experience. Deployed on AWS S3.',
-      link: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
-      tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Accessibility'],
-      date: '2025',
-      role: 'Frontend Developer',
+      title: 'GitHub Accessibility Redesign',
+      summary: 'Redesigned GitHub repository page with enhanced accessibility features following WCAG 2.1 AA standards.',
+      tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
+      keyFeatures: ['WCAG 2.1 AA compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
+      challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
+      demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
       image: '/img/github-redesign-preview.jpg'
     },
     {
       id: 'cadendengel_portfolio',
       title: 'Personal Portfolio Website',
-      description: 'This personal portfolio website, which I built with React and Vite, showcases my projects, skills, and experience as a full-stack web developer.',
-      link: 'https://cadendengel.com',
-      tech: ['React', 'Vite', 'CSS', 'Responsive Design'],
-      date: '2026',
-      role: 'Full-Stack Developer',
+      summary: 'This personal portfolio website showcasing projects, skills, and experience as a full-stack web developer.',
+      tech: ['React', 'Vite', 'CSS', 'JavaScript', 'Responsive Design'],
+      keyFeatures: ['Project showcase', 'Dark mode toggle', 'Responsive layout', 'Skill categories', 'Contact integration'],
+      challenge: 'Creating an accessible, visually appealing portfolio that loads quickly while displaying diverse project information in a clear hierarchy required careful layout planning and performance optimization.',
+      demoLink: 'https://cadendengel.com',
       image: '/img/portfolio-preview.jpg'
-    },
-    {
-      id: 'meal-prep-pantry',
-      title: 'Meal Prep Pantry',
-      description: 'Full-stack meal planning app designed for my girlfriend, built in under 2 days with AI assistants. Features recipe, macronutrient, user authentication features. Hosted with Vercel.',
-      link: 'https://meal-prep-pantry.vercel.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Vercel', 'Tesseract.js', 'AI Integration'],
-      date: '2026',
-      role: 'Full-Stack Developer',
-      image: '/img/meal-prep-pantry-preview.jpg'
     }
   ]);
 
@@ -74,6 +74,82 @@ function App() {
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [highlightContact, setHighlightContact] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [visitorCount, setVisitorCount] = useState(null);
+  const [isTrafficLoading, setIsTrafficLoading] = useState(true);
+  const [trafficError, setTrafficError] = useState('');
+  const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
+  const [trafficSource, setTrafficSource] = useState('');
+  const [heroScrollProgress, setHeroScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    const handleKeyDown = (e) => { if (e.key === 'Escape') setSelectedProject(null); };
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const counterNamespace = 'cadendengel-portfolio';
+    const counterName = 'website-visitors';
+    const hitCooldownMs = 30 * 60 * 1000;
+    const lastHitKey = 'portfolio-traffic-last-hit-at';
+
+    const trackVisit = async () => {
+      const now = Date.now();
+      const lastHitAt = Number.parseInt(localStorage.getItem(lastHitKey) || '0', 10) || 0;
+      const shouldIncrement = now - lastHitAt >= hitCooldownMs;
+
+      try {
+        const endpoint = shouldIncrement
+          ? `https://api.counterapi.dev/v1/${counterNamespace}/${counterName}/up`
+          : `https://api.counterapi.dev/v1/${counterNamespace}/${counterName}`;
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error('Traffic API unavailable');
+        const data = await response.json();
+        const parsedCount = Number.parseInt(String(data?.count ?? ''), 10);
+        if (isMounted) {
+          if (shouldIncrement) {
+            localStorage.setItem(lastHitKey, String(now));
+          }
+          setVisitorCount(Number.isFinite(parsedCount) ? parsedCount : null);
+          setTrafficUpdatedAt(new Date().toLocaleString());
+          setTrafficError('');
+          setTrafficSource(shouldIncrement ? 'global' : 'global-cached');
+        }
+      } catch {
+        if (isMounted) {
+          const localCounterKey = 'portfolio-local-visitor-count';
+          const currentLocalCount = Number.parseInt(localStorage.getItem(localCounterKey) || '0', 10) || 0;
+          const nextLocalCount = shouldIncrement ? currentLocalCount + 1 : currentLocalCount;
+          if (shouldIncrement) {
+            localStorage.setItem(lastHitKey, String(now));
+            localStorage.setItem(localCounterKey, String(nextLocalCount));
+          }
+
+          setVisitorCount(nextLocalCount);
+          setTrafficUpdatedAt(new Date().toLocaleString());
+          setTrafficSource(shouldIncrement ? 'local' : 'local-cached');
+          setTrafficError('');
+        }
+      } finally {
+        if (isMounted) {
+          setIsTrafficLoading(false);
+        }
+      }
+    };
+
+    trackVisit();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const emailAddress = 'caden.d.dengel@gmail.com';
   const mailSubject = encodeURIComponent('');
   const mailBody = encodeURIComponent('');
@@ -84,6 +160,31 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    let frameId = null;
+
+    const updateScrollProgress = () => {
+      const progress = Math.min(window.scrollY / 420, 1);
+      setHeroScrollProgress(progress);
+      frameId = null;
+    };
+
+    const handleScroll = () => {
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(updateScrollProgress);
+    };
+
+    updateScrollProgress();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleGetInTouchClick = (e) => {
     e.preventDefault();
@@ -133,12 +234,17 @@ function App() {
       </header>
 
       <main id="main-content">
-        <section className="hero">
+        <section className="hero" style={{ '--hero-scroll': heroScrollProgress }}>
           <div className="container hero-grid">
             <div className="hero-text">
-              <h2>Full-Stack Web Developer</h2>
-              <p className="lead">Hi, I&apos;m Caden, a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve developed 4+ production-ready applications, including a real-time messaging platform and computer vision systems.</p>
-              <p className="lead">My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building up scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
+              <p className="hero-kicker">Full-Stack Developer</p>
+              <h2 className="hero-headline">
+                Hi, I&apos;m <span>Caden Dengel</span>.
+                <br />
+                I build web applications and the infrastructure that runs them.
+              </h2>
+              <p className="lead">My projects focus on solving practical problems, like automating grocery ingredient data, building full-stack tools, and deploying software using modern cloud infrastructure.</p>
+              <p className="lead">I enjoy working across the stack: designing APIs, building intuitive interfaces, and figuring out how to deploy systems reliably.</p>
               <div className="hero-meta">
                 <span className="location">San Marcos/Kyle/South Austin, TX Area</span>
                 <span className="separator">•</span>
@@ -155,8 +261,10 @@ function App() {
               </p>
             </div>
 
-            <div className="hero-image">
-              <img src="/img/Profile_Picture.jpg" alt="Caden Dengel professional headshot" loading="eager" />
+            <div className="hero-image" style={{ transform: `translateY(${heroScrollProgress * -28}px)` }}>
+              <div className="hero-image-shell">
+                <img src="/img/Profile_Picture.jpg" alt="Caden Dengel professional headshot" loading="eager" />
+              </div>
             </div>
           </div>
         </section>
@@ -203,27 +311,91 @@ function App() {
           <h3>Projects</h3>
           <div className="project-list">
             {projects.map(p => (
-              <article key={p.id} className="project-card">
-                <div className="project-image-placeholder">
-                  <img src={p.image} alt={`${p.title} project screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
-                </div>
-                <div className="project-content">
-                  <div className="project-header">
-                    <h4>{p.title}</h4>
-                    <span className="project-meta">{p.date} • {p.role}</span>
-                  </div>
-                  <p>{p.description}</p>
-                  <div className="project-tech">
-                    {p.tech.map(tech => (
-                      <span key={tech} className="tech-badge">{tech}</span>
-                    ))}
+              <article key={p.id} className="project-card" onClick={() => setSelectedProject(p)}>
+                <div className="project-image-wrap">
+                  <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
+                  <div className="project-image-overlay">
+                    <span>View Details</span>
                   </div>
                 </div>
-                <div className="project-actions">
-                  <a href={p.link} target="_blank" rel="noreferrer">View Project →</a>
+                <div className="project-card-body">
+                  <h4 className="project-title">{p.title}</h4>
+                  <p className="project-summary">{p.summary}</p>
+                  <button className="project-details-btn" onClick={() => setSelectedProject(p)} aria-label={`View details for ${p.title}`}>View Details →</button>
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        {selectedProject && (
+          <div className="modal-overlay" onClick={() => setSelectedProject(null)} role="dialog" aria-modal="true" aria-label={selectedProject.title}>
+            <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close" onClick={() => setSelectedProject(null)} aria-label="Close details">✕</button>
+              <h3 className="modal-title">{selectedProject.title}</h3>
+              <p className="modal-summary">{selectedProject.summary}</p>
+
+              <div className="modal-section">
+                <h4>Tech Stack</h4>
+                <div className="project-tech">
+                  {selectedProject.tech.map(t => <span key={t} className="tech-badge">{t}</span>)}
+                </div>
+              </div>
+
+              <div className="modal-section">
+                <h4>Key Features</h4>
+                <ul className="project-features">
+                  {selectedProject.keyFeatures.map((f, i) => <li key={i}>{f}</li>)}
+                </ul>
+              </div>
+
+              <div className="modal-section">
+                <h4>Challenge</h4>
+                <p className="modal-challenge">{selectedProject.challenge}</p>
+              </div>
+
+              <div className="modal-section">
+                <h4>Links</h4>
+                <div className="modal-links">
+                  {selectedProject.demoLink && (
+                    <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-demo">Live Demo →</a>
+                  )}
+                  {selectedProject.githubLink && (
+                    <a href={selectedProject.githubLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <section className="about">
+          <div className="container about-layout">
+            <div className="about-content">
+              <h3>About Me</h3>
+              <p>I&apos;m a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve developed 6+ production-ready applications, including a real-time messaging platform and computer vision systems.</p>
+              <p>My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
+            </div>
+
+            <aside className="traffic-card" aria-live="polite">
+              <p className="traffic-label">Website Traffic</p>
+              <p className="traffic-value">
+                {isTrafficLoading && 'Loading...'}
+                {!isTrafficLoading && !trafficError && visitorCount !== null && visitorCount.toLocaleString()}
+                {!isTrafficLoading && trafficError && '--'}
+              </p>
+              {!isTrafficLoading && !trafficError && trafficUpdatedAt && (
+                <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
+              )}
+              <p className="traffic-caption">
+                {trafficSource === 'global' && 'Total visits tracked for this portfolio.'}
+                {trafficSource === 'global-cached' && 'Recently viewed, so this visit was not counted again.'}
+                {trafficSource === 'local' && 'Local development estimate (API unavailable).'}
+                {trafficSource === 'local-cached' && 'Using your local estimate without counting another refresh.'}
+                {!trafficSource && 'Total visits tracked for this portfolio.'}
+              </p>
+              {trafficError && <p className="traffic-error">{trafficError}</p>}
+            </aside>
           </div>
         </section>
 
