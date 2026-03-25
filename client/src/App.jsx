@@ -9,7 +9,7 @@ function App() {
       summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
       tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
       keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
-      challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across network interruptions required careful state management and reconnection logic.',
+      challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
       demoLink: 'https://fibersync-fd2e2.web.app/',
       image: '/img/fibersync-preview.jpg'
     },
@@ -19,7 +19,7 @@ function App() {
       summary: 'A full-stack web application that automates meal planning using grocery store product data.',
       tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
       keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
-      challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures.',
+      challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
       demoLink: 'https://meal-prep-pantry.vercel.app/',
       image: '/img/meal-prep-pantry-preview.jpg'
     },
@@ -39,16 +39,16 @@ function App() {
       summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
       tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
       keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
-      challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required balancing cryptographic security with computational efficiency.',
+      challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
       githubLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
       image: '/img/mle-preview.jpg'
     },
     {
       id: 'eng3303proj4',
       title: 'GitHub Accessibility Redesign',
-      summary: 'Redesigned GitHub repository page with enhanced accessibility features following WCAG 2.1 AA standards.',
+      summary: 'Redesigned GitHub repository page with enhanced accessibility features following some of the WCAG standards.',
       tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
-      keyFeatures: ['WCAG 2.1 AA compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
+      keyFeatures: ['WCAG compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
       challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
       demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
       image: '/img/github-redesign-preview.jpg'
@@ -59,17 +59,17 @@ function App() {
       summary: 'This personal portfolio website showcasing projects, skills, and experience as a full-stack web developer.',
       tech: ['React', 'Vite', 'CSS', 'JavaScript', 'Responsive Design'],
       keyFeatures: ['Project showcase', 'Dark mode toggle', 'Responsive layout', 'Skill categories', 'Contact integration'],
-      challenge: 'Creating an accessible, visually appealing portfolio that loads quickly while displaying diverse project information in a clear hierarchy required careful layout planning and performance optimization.',
+      challenge: 'Creating an accessible, visually appealing portfolio that loads quickly while displaying diverse project information in a clear and user-friendly manner required careful layout planning and optimization.',
       demoLink: 'https://cadendengel.com',
       image: '/img/portfolio-preview.jpg'
     }
   ]);
 
   const skills = {
-    frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite', 'Responsive Design'],
+    frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite'],
     backend: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'REST APIs'],
     languages: ['JavaScript', 'Python', 'C++', 'C', 'Java', 'C#'],
-    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS', 'Postman']
+    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS']
   };
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
