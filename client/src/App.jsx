@@ -243,7 +243,7 @@ function App() {
                 <br />
                 I build web applications and the infrastructure that runs them.
               </h2>
-              <p className="lead">My projects focus on solving practical problems, like automating grocery ingredient data, building full-stack tools, and deploying software using modern cloud infrastructure.</p>
+              <p className="lead">My projects focus on solving practical problems, like automating personal tasks, building full-stack tools, and deploying software using modern cloud infrastructure.</p>
               <p className="lead">I enjoy working across the stack: designing APIs, building intuitive interfaces, and figuring out how to deploy systems reliably.</p>
               <div className="hero-meta">
                 <span className="location">San Marcos/Kyle/South Austin, TX Area</span>
