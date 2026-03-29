@@ -140,7 +140,8 @@ main > section + section::before,
 .project-card {
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  flex: 1 1 320px;
+  max-width: 360px;
   background: var(--card);
   border-radius: 10px;
   overflow: hidden;
@@ -512,7 +513,11 @@ main > section + section::before,
   }
   
   .project-list {
-    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  .project-card {
+    max-width: 100%;
   }
   
   .hero-meta {

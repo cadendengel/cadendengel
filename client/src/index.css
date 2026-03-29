@@ -192,8 +192,8 @@ p{margin-top:1.6rem;line-height:1.6}
   position: relative;
   background: transparent;
 }
-.project-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
-.project-card{background:var(--card);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 20px rgba(0,0,0,0.04);cursor:pointer;transition:transform .22s ease, box-shadow .22s ease}
+.project-list{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem}
+.project-card{background:var(--card);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;flex:1 1 320px;max-width:360px;box-shadow:0 6px 20px rgba(0,0,0,0.04);transition:transform .22s ease, box-shadow .22s ease}
 .project-card:hover{transform:translateY(-6px);box-shadow:0 14px 40px rgba(0,0,0,0.08)}
 .hint{color:var(--muted);font-size:.9rem;margin-top:.6rem}
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 function App() {
@@ -53,16 +53,6 @@ function App() {
       demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
       image: '/img/github-redesign-preview.jpg'
     },
-    {
-      id: 'cadendengel_portfolio',
-      title: 'Personal Portfolio Website',
-      summary: 'This personal portfolio website showcasing projects, skills, and experience as a full-stack web developer.',
-      tech: ['React', 'Vite', 'CSS', 'JavaScript', 'Responsive Design'],
-      keyFeatures: ['Project showcase', 'Dark mode toggle', 'Responsive layout', 'Skill categories', 'Contact integration'],
-      challenge: 'Creating an accessible, visually appealing portfolio that loads quickly while displaying diverse project information in a clear and user-friendly manner required careful layout planning and optimization.',
-      demoLink: 'https://cadendengel.com',
-      image: '/img/portfolio-preview.jpg'
-    }
   ]);
 
   const skills = {
@@ -81,12 +71,64 @@ function App() {
   const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
   const [trafficSource, setTrafficSource] = useState('');
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
+  const modalPanelRef = useRef(null);
+  const modalCloseRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
+
+  const closeProjectDetails = () => {
+    setSelectedProject(null);
+    const focusTarget = lastFocusedElementRef.current;
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      window.requestAnimationFrame(() => {
+        focusTarget.focus();
+      });
+    }
+  };
+
+  const openProjectDetails = (project) => {
+    lastFocusedElementRef.current = document.activeElement;
+    setSelectedProject(project);
+  };
+
+  const handleModalKeyDown = (event) => {
+    if (!selectedProject || event.key !== 'Tab') return;
+
+    const panel = modalPanelRef.current;
+    if (!panel) return;
+
+    const focusable = panel.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
 
   useEffect(() => {
     if (!selectedProject) return;
-    const handleKeyDown = (e) => { if (e.key === 'Escape') setSelectedProject(null); };
+
+    modalCloseRef.current?.focus();
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeProjectDetails();
+    };
+
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
@@ -154,7 +196,6 @@ function App() {
   const mailSubject = encodeURIComponent('');
   const mailBody = encodeURIComponent('');
   const mailtoLink = `mailto:${emailAddress}?subject=${mailSubject}&body=${mailBody}`;
-  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${mailSubject}&body=${mailBody}`;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -195,21 +236,6 @@ function App() {
     setTimeout(() => {
       setHighlightContact(true);
       setTimeout(() => setHighlightContact(false), 2000);
-    }, 800);
-  };
-
-  const handleContactClick = async (event) => {
-    event.preventDefault();
-
-    const popup = window.open(gmailLink, '_blank', 'noopener,noreferrer');
-    if (!popup) {
-      window.location.href = mailtoLink;
-    }
-
-    setTimeout(() => {
-      if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(emailAddress).catch(() => {});
-      }
     }, 800);
   };
 
@@ -311,17 +337,17 @@ function App() {
           <h3>Projects</h3>
           <div className="project-list">
             {projects.map(p => (
-              <article key={p.id} className="project-card" onClick={() => setSelectedProject(p)}>
+              <article key={p.id} className="project-card">
                 <div className="project-image-wrap">
                   <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
                   <div className="project-image-overlay">
-                    <span>View Details</span>
+                    <span>Project Preview</span>
                   </div>
                 </div>
                 <div className="project-card-body">
                   <h4 className="project-title">{p.title}</h4>
                   <p className="project-summary">{p.summary}</p>
-                  <button className="project-details-btn" onClick={() => setSelectedProject(p)} aria-label={`View details for ${p.title}`}>View Details →</button>
+                  <button className="project-details-btn" onClick={() => openProjectDetails(p)} aria-label={`View details for ${p.title}`}>View Details →</button>
                 </div>
               </article>
             ))}
@@ -329,10 +355,18 @@ function App() {
         </section>
 
         {selectedProject && (
-          <div className="modal-overlay" onClick={() => setSelectedProject(null)} role="dialog" aria-modal="true" aria-label={selectedProject.title}>
-            <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close" onClick={() => setSelectedProject(null)} aria-label="Close details">✕</button>
-              <h3 className="modal-title">{selectedProject.title}</h3>
+          <div className="modal-overlay" onClick={closeProjectDetails}>
+            <div
+              className="modal-panel"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={handleModalKeyDown}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`project-modal-title-${selectedProject.id}`}
+              ref={modalPanelRef}
+            >
+              <button ref={modalCloseRef} className="modal-close" onClick={closeProjectDetails} aria-label="Close details">✕</button>
+              <h3 id={`project-modal-title-${selectedProject.id}`} className="modal-title">{selectedProject.title}</h3>
               <p className="modal-summary">{selectedProject.summary}</p>
 
               <div className="modal-section">
@@ -373,7 +407,7 @@ function App() {
           <div className="container about-layout">
             <div className="about-content">
               <h3>About Me</h3>
-              <p>I&apos;m a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve developed 6+ production-ready applications, including a real-time messaging platform and computer vision systems.</p>
+              <p>I&apos;m a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve built multiple deployed applications, including a real-time messaging platform and computer vision systems.</p>
               <p>My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
             </div>
 
@@ -405,7 +439,7 @@ function App() {
         <div className="container footer-content">
           <div className="footer-contact">
             <span className="footer-label">Get In Touch</span>
-            <a className="footer-email" href={gmailLink} onClick={handleContactClick}>caden.d.dengel@gmail.com</a>
+            <a className="footer-email" href={mailtoLink}>caden.d.dengel@gmail.com</a>
           </div>
           <div className="footer-location">
             San Marcos/Kyle/South Austin, TX Area • Available for Full-Time & Contract Work
