@@ -456,9 +456,29 @@ main > section + section::before,
   font-weight: 700;
 }
 
+.traffic-metrics {
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.traffic-metric {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.traffic-metric-label {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .traffic-value {
-  margin: 0.5rem 0 0;
-  font-size: 2rem;
+  margin: 0;
+  font-size: 1.6rem;
   line-height: 1.1;
   font-weight: 700;
   color: var(--accent);

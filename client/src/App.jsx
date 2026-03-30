@@ -68,7 +68,8 @@ function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [highlightContact, setHighlightContact] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [visitorCount, setVisitorCount] = useState(null);
+  const [rawPageLoadCount, setRawPageLoadCount] = useState(null);
+  const [uniqueSessionCount, setUniqueSessionCount] = useState(null);
   const [isTrafficLoading, setIsTrafficLoading] = useState(true);
   const [trafficError, setTrafficError] = useState('');
   const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
@@ -140,38 +141,66 @@ function App() {
   useEffect(() => {
     let isMounted = true;
     const counterNamespace = 'cadendengel-portfolio';
-    const counterName = 'website-visitors';
-    const pageLoadGuardKey = '__cadendengelPortfolioLoadCounted__';
+    const rawPageLoadCounterName = 'website-page-loads';
+    const uniqueSessionCounterName = 'website-unique-sessions';
+    const pageLoadGuardKey = '__cadendengelPortfolioRawLoadCounted__';
+    const sessionTimestampStorageKey = '__cadendengelPortfolioSessionTimestamp__';
+    const sessionWindowMs = 30 * 60 * 1000;
     const counter = new Counter({ version: 'v1', namespace: counterNamespace });
 
-    const trackVisit = async () => {
-      const hasCountedThisLoad = window[pageLoadGuardKey] === true;
-      const shouldIncrement = !hasCountedThisLoad;
+    const parseCounterValue = (counterResponse) => {
+      const rawValue = counterResponse?.value ?? counterResponse?.data ?? counterResponse?.count;
+      const parsedValue = Number.parseInt(String(rawValue ?? ''), 10);
+      return Number.isFinite(parsedValue) ? parsedValue : null;
+    };
 
-      if (shouldIncrement) {
+    const trackVisit = async () => {
+      const hasCountedRawLoad = window[pageLoadGuardKey] === true;
+      const shouldIncrementRawLoad = !hasCountedRawLoad;
+
+      const now = Date.now();
+      const previousSessionTimestamp = Number.parseInt(
+        String(sessionStorage.getItem(sessionTimestampStorageKey) ?? ''),
+        10
+      );
+      const hasActiveSession = Number.isFinite(previousSessionTimestamp)
+        && now - previousSessionTimestamp < sessionWindowMs;
+      const shouldIncrementUniqueSession = !hasActiveSession;
+
+      if (shouldIncrementRawLoad) {
         window[pageLoadGuardKey] = true;
       }
 
-      try {
-        const result = shouldIncrement
-          ? await counter.up(counterName)
-          : await counter.get(counterName);
+      sessionStorage.setItem(sessionTimestampStorageKey, String(now));
 
-        const rawCount = result?.value ?? result?.data ?? result?.count;
-        const parsedCount = Number.parseInt(String(rawCount ?? ''), 10);
+      try {
+        const [rawPageLoadResult, uniqueSessionResult] = await Promise.all([
+          shouldIncrementRawLoad
+            ? counter.up(rawPageLoadCounterName)
+            : counter.get(rawPageLoadCounterName),
+          shouldIncrementUniqueSession
+            ? counter.up(uniqueSessionCounterName)
+            : counter.get(uniqueSessionCounterName),
+        ]);
 
         if (isMounted) {
-          setVisitorCount(Number.isFinite(parsedCount) ? parsedCount : null);
+          setRawPageLoadCount(parseCounterValue(rawPageLoadResult));
+          setUniqueSessionCount(parseCounterValue(uniqueSessionResult));
           setTrafficUpdatedAt(new Date().toLocaleString());
           setTrafficError('');
         }
       } catch {
-        if (shouldIncrement) {
+        if (shouldIncrementRawLoad) {
           delete window[pageLoadGuardKey];
         }
 
+        if (shouldIncrementUniqueSession) {
+          sessionStorage.removeItem(sessionTimestampStorageKey);
+        }
+
         if (isMounted) {
-          setVisitorCount(null);
+          setRawPageLoadCount(null);
+          setUniqueSessionCount(null);
           setTrafficUpdatedAt('');
           setTrafficError('Traffic counter is temporarily unavailable. Try again in a moment.');
         }
@@ -409,16 +438,31 @@ function App() {
 
             <aside className="traffic-card" aria-live="polite">
               <p className="traffic-label">Website Traffic</p>
-              <p className="traffic-value">
-                {isTrafficLoading && 'Loading...'}
-                {!isTrafficLoading && !trafficError && visitorCount !== null && visitorCount.toLocaleString()}
-                {!isTrafficLoading && trafficError && '--'}
-              </p>
+              <div className="traffic-metrics">
+                <div className="traffic-metric">
+                  <p className="traffic-metric-label">Raw Page Loads</p>
+                  <p className="traffic-value">
+                    {isTrafficLoading && 'Loading...'}
+                    {!isTrafficLoading && !trafficError && rawPageLoadCount !== null && rawPageLoadCount.toLocaleString()}
+                    {!isTrafficLoading && !trafficError && rawPageLoadCount === null && '--'}
+                    {!isTrafficLoading && trafficError && '--'}
+                  </p>
+                </div>
+                <div className="traffic-metric">
+                  <p className="traffic-metric-label">Unique Sessions</p>
+                  <p className="traffic-value">
+                    {isTrafficLoading && 'Loading...'}
+                    {!isTrafficLoading && !trafficError && uniqueSessionCount !== null && uniqueSessionCount.toLocaleString()}
+                    {!isTrafficLoading && !trafficError && uniqueSessionCount === null && '--'}
+                    {!isTrafficLoading && trafficError && '--'}
+                  </p>
+                </div>
+              </div>
               {!isTrafficLoading && !trafficError && trafficUpdatedAt && (
                 <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
               )}
               <p className="traffic-caption">
-                Total page loads tracked globally for this site.
+                Raw page loads track every load. Unique sessions increment once per 30-minute timestamp window per browser session.
               </p>
               {trafficError && <p className="traffic-error">{trafficError}</p>}
             </aside>
