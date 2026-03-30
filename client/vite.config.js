@@ -10,4 +10,13 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api/counter': {
+        target: 'https://api.counterapi.dev',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/counter/, ''),
+      },
+    },
+  },
 })

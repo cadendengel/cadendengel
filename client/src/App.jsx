@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Counter } from 'counterapi'
 import './App.css'
 
 function App() {
@@ -146,7 +145,38 @@ function App() {
     const pageLoadGuardKey = '__cadendengelPortfolioRawLoadCounted__';
     const sessionTimestampStorageKey = '__cadendengelPortfolioSessionTimestamp__';
     const sessionWindowMs = 30 * 60 * 1000;
-    const counter = new Counter({ version: 'v1', namespace: counterNamespace });
+    const counterApiBase = import.meta.env.DEV ? '/api/counter' : 'https://api.counterapi.dev';
+
+    const requestCounter = async (counterName, shouldIncrement) => {
+      const counterPath = shouldIncrement ? `${counterName}/up` : `${counterName}/`;
+      const endpoint = `${counterApiBase}/v1/${counterNamespace}/${counterPath}`;
+      const proxyEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(endpoint)}`;
+
+      const attemptRequest = async (url) => {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Counter request failed: ${response.status}`);
+        }
+
+        return response.json();
+      };
+
+      if (import.meta.env.DEV) {
+        return attemptRequest(endpoint);
+      }
+
+      try {
+        return await attemptRequest(endpoint);
+      } catch {
+        return attemptRequest(proxyEndpoint);
+      }
+    };
 
     const parseCounterValue = (counterResponse) => {
       const rawValue = counterResponse?.value ?? counterResponse?.data ?? counterResponse?.count;
@@ -176,11 +206,11 @@ function App() {
       try {
         const [rawPageLoadResult, uniqueSessionResult] = await Promise.all([
           shouldIncrementRawLoad
-            ? counter.up(rawPageLoadCounterName)
-            : counter.get(rawPageLoadCounterName),
+            ? requestCounter(rawPageLoadCounterName, true)
+            : requestCounter(rawPageLoadCounterName, false),
           shouldIncrementUniqueSession
-            ? counter.up(uniqueSessionCounterName)
-            : counter.get(uniqueSessionCounterName),
+            ? requestCounter(uniqueSessionCounterName, true)
+            : requestCounter(uniqueSessionCounterName, false),
         ]);
 
         if (isMounted) {
