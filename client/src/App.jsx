@@ -11,6 +11,7 @@ function App() {
       keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
       challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
       demoLink: 'https://fibersync-fd2e2.web.app/',
+      repoLink: 'https://github.com/cadendengel/FiberSync/',
       image: '/img/fibersync-preview.jpg'
     },
     {
@@ -21,6 +22,7 @@ function App() {
       keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
       challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
       demoLink: 'https://meal-prep-pantry.vercel.app/',
+      repoLink: 'https://github.com/cadendengel/meal-prep-pantry/',
       image: '/img/meal-prep-pantry-preview.jpg'
     },
     {
@@ -30,7 +32,7 @@ function App() {
       tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
       keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
       challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
-      githubLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
+      repoLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
       image: '/img/visionary-preview.jpg'
     },
     {
@@ -40,7 +42,7 @@ function App() {
       tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
       keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
       challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
-      githubLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
+      repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
       image: '/img/mle-preview.jpg'
     },
     {
@@ -394,8 +396,8 @@ function App() {
                   {selectedProject.demoLink && (
                     <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-demo">Live Demo →</a>
                   )}
-                  {selectedProject.githubLink && (
-                    <a href={selectedProject.githubLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
+                  {selectedProject.repoLink && (
+                    <a href={selectedProject.repoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
                   )}
                 </div>
               </div>
