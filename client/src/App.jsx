@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 function App() {
@@ -6,84 +6,281 @@ function App() {
     {
       id: 'fibersync',
       title: 'FiberSync',
-      description: 'A full-stack, real-time web messenger application with secure authentication and message persistence. Handles real-time messaging with WebSocket integration.',
-      link: 'https://fibersync-fd2e2.web.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'Render', 'WebSockets', 'Python Unittest', 'Jest', 'Python'],
-      date: '2025',
-      role: 'Full-Stack Developer',
+      summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
+      keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
+      challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
+      demoLink: 'https://fibersync-fd2e2.web.app/',
+      repoLink: 'https://github.com/cadendengel/FiberSync/',
       image: '/img/fibersync-preview.jpg'
+    },
+    {
+      id: 'meal-prep-pantry',
+      title: 'Meal Prep Pantry',
+      summary: 'A full-stack web application that automates meal planning using grocery store product data.',
+      tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
+      keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
+      challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
+      demoLink: 'https://meal-prep-pantry.vercel.app/',
+      repoLink: 'https://github.com/cadendengel/meal-prep-pantry/',
+      image: '/img/meal-prep-pantry-preview.jpg'
     },
     {
       id: 'visionary',
       title: 'Visionary',
-      description: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
-      link: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
-      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Hardware Integration'],
-      date: '2025',
-      role: 'Backend Developer, Hardware Engineer',
+      summary: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
+      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
+      keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
+      challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
+      repoLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
       image: '/img/visionary-preview.jpg'
     },
     {
       id: 'mle-healthcare-extension',
       title: 'MLE Healthcare Extension',
-      description: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
-      link: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
+      summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
       tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
-      date: '2025',
-      role: 'ML Engineer',
+      keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
+      challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
+      repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
       image: '/img/mle-preview.jpg'
     },
     {
       id: 'eng3303proj4',
-      title: 'Github Accessibility Redesign',
-      description: 'Redesigned GitHub repository page with enhanced accessibility features, loosely guided by WCAG 2.1 AA compliance, and improved user experience. Deployed on AWS S3.',
-      link: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
-      tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Accessibility'],
-      date: '2025',
-      role: 'Frontend Developer',
+      title: 'GitHub Accessibility Redesign',
+      summary: 'Redesigned GitHub repository page with enhanced accessibility features following some of the WCAG standards.',
+      tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
+      keyFeatures: ['WCAG compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
+      challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
+      demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
       image: '/img/github-redesign-preview.jpg'
     },
-    {
-      id: 'cadendengel_portfolio',
-      title: 'Personal Portfolio Website',
-      description: 'This personal portfolio website, which I built with React and Vite, showcases my projects, skills, and experience as a full-stack web developer.',
-      link: 'https://cadendengel.com',
-      tech: ['React', 'Vite', 'CSS', 'Responsive Design'],
-      date: '2026',
-      role: 'Full-Stack Developer',
-      image: '/img/portfolio-preview.jpg'
-    },
-    {
-      id: 'meal-prep-pantry',
-      title: 'Meal Prep Pantry',
-      description: 'Full-stack meal planning app designed for my girlfriend, built in under 2 days with AI assistants. Features recipe, macronutrient, user authentication features. Hosted with Vercel.',
-      link: 'https://meal-prep-pantry.vercel.app/',
-      tech: ['React', 'Node.js', 'MongoDB', 'Vercel', 'Tesseract.js', 'AI Integration'],
-      date: '2026',
-      role: 'Full-Stack Developer',
-      image: '/img/meal-prep-pantry-preview.jpg'
-    }
   ]);
 
   const skills = {
-    frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite', 'Responsive Design'],
+    frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite'],
     backend: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'REST APIs'],
     languages: ['JavaScript', 'Python', 'C++', 'C', 'Java', 'C#'],
-    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS', 'Postman']
+    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS']
   };
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [highlightContact, setHighlightContact] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [rawPageLoadCount, setRawPageLoadCount] = useState(null);
+  const [uniqueSessionCount, setUniqueSessionCount] = useState(null);
+  const [isTrafficLoading, setIsTrafficLoading] = useState(true);
+  const [trafficError, setTrafficError] = useState('');
+  const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
+  const [heroScrollProgress, setHeroScrollProgress] = useState(0);
+  const modalPanelRef = useRef(null);
+  const modalCloseRef = useRef(null);
+  const lastFocusedElementRef = useRef(null);
+
+  const closeProjectDetails = () => {
+    setSelectedProject(null);
+    const focusTarget = lastFocusedElementRef.current;
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      window.requestAnimationFrame(() => {
+        focusTarget.focus();
+      });
+    }
+  };
+
+  const openProjectDetails = (project) => {
+    lastFocusedElementRef.current = document.activeElement;
+    setSelectedProject(project);
+  };
+
+  const handleModalKeyDown = (event) => {
+    if (!selectedProject || event.key !== 'Tab') return;
+
+    const panel = modalPanelRef.current;
+    if (!panel) return;
+
+    const focusable = panel.querySelectorAll(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedProject) return;
+
+    modalCloseRef.current?.focus();
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') closeProjectDetails();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const counterNamespace = 'cadendengel-portfolio';
+    const rawPageLoadCounterName = 'website-page-loads';
+    const uniqueSessionCounterName = 'website-unique-sessions';
+    const pageLoadGuardKey = '__cadendengelPortfolioRawLoadCounted__';
+    const sessionTimestampStorageKey = '__cadendengelPortfolioSessionTimestamp__';
+    const sessionWindowMs = 30 * 60 * 1000;
+    const counterApiBase = import.meta.env.DEV ? '/api/counter' : 'https://api.counterapi.dev';
+
+    const requestCounter = async (counterName, shouldIncrement) => {
+      const counterPath = shouldIncrement ? `${counterName}/up` : `${counterName}/`;
+      const endpoint = `${counterApiBase}/v1/${counterNamespace}/${counterPath}`;
+      const proxyEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(endpoint)}`;
+
+      const attemptRequest = async (url) => {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Counter request failed: ${response.status}`);
+        }
+
+        return response.json();
+      };
+
+      if (import.meta.env.DEV) {
+        return attemptRequest(endpoint);
+      }
+
+      try {
+        return await attemptRequest(endpoint);
+      } catch {
+        return attemptRequest(proxyEndpoint);
+      }
+    };
+
+    const parseCounterValue = (counterResponse) => {
+      const rawValue = counterResponse?.value ?? counterResponse?.data ?? counterResponse?.count;
+      const parsedValue = Number.parseInt(String(rawValue ?? ''), 10);
+      return Number.isFinite(parsedValue) ? parsedValue : null;
+    };
+
+    const trackVisit = async () => {
+      const hasCountedRawLoad = window[pageLoadGuardKey] === true;
+      const shouldIncrementRawLoad = !hasCountedRawLoad;
+
+      const now = Date.now();
+      const previousSessionTimestamp = Number.parseInt(
+        String(sessionStorage.getItem(sessionTimestampStorageKey) ?? ''),
+        10
+      );
+      const hasActiveSession = Number.isFinite(previousSessionTimestamp)
+        && now - previousSessionTimestamp < sessionWindowMs;
+      const shouldIncrementUniqueSession = !hasActiveSession;
+
+      if (shouldIncrementRawLoad) {
+        window[pageLoadGuardKey] = true;
+      }
+
+      sessionStorage.setItem(sessionTimestampStorageKey, String(now));
+
+      try {
+        const [rawPageLoadResult, uniqueSessionResult] = await Promise.all([
+          shouldIncrementRawLoad
+            ? requestCounter(rawPageLoadCounterName, true)
+            : requestCounter(rawPageLoadCounterName, false),
+          shouldIncrementUniqueSession
+            ? requestCounter(uniqueSessionCounterName, true)
+            : requestCounter(uniqueSessionCounterName, false),
+        ]);
+
+        if (isMounted) {
+          setRawPageLoadCount(parseCounterValue(rawPageLoadResult));
+          setUniqueSessionCount(parseCounterValue(uniqueSessionResult));
+          setTrafficUpdatedAt(new Date().toLocaleString());
+          setTrafficError('');
+        }
+      } catch {
+        if (shouldIncrementRawLoad) {
+          delete window[pageLoadGuardKey];
+        }
+
+        if (shouldIncrementUniqueSession) {
+          sessionStorage.removeItem(sessionTimestampStorageKey);
+        }
+
+        if (isMounted) {
+          setRawPageLoadCount(null);
+          setUniqueSessionCount(null);
+          setTrafficUpdatedAt('');
+          setTrafficError('Traffic counter is temporarily unavailable. Try again in a moment.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsTrafficLoading(false);
+        }
+      }
+    };
+
+    trackVisit();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const emailAddress = 'caden.d.dengel@gmail.com';
   const mailSubject = encodeURIComponent('');
   const mailBody = encodeURIComponent('');
   const mailtoLink = `mailto:${emailAddress}?subject=${mailSubject}&body=${mailBody}`;
-  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}&su=${mailSubject}&body=${mailBody}`;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    let frameId = null;
+
+    const updateScrollProgress = () => {
+      const progress = Math.min(window.scrollY / 420, 1);
+      setHeroScrollProgress(progress);
+      frameId = null;
+    };
+
+    const handleScroll = () => {
+      if (frameId !== null) return;
+      frameId = window.requestAnimationFrame(updateScrollProgress);
+    };
+
+    updateScrollProgress();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleGetInTouchClick = (e) => {
     e.preventDefault();
@@ -94,21 +291,6 @@ function App() {
     setTimeout(() => {
       setHighlightContact(true);
       setTimeout(() => setHighlightContact(false), 2000);
-    }, 800);
-  };
-
-  const handleContactClick = async (event) => {
-    event.preventDefault();
-
-    const popup = window.open(gmailLink, '_blank', 'noopener,noreferrer');
-    if (!popup) {
-      window.location.href = mailtoLink;
-    }
-
-    setTimeout(() => {
-      if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(emailAddress).catch(() => {});
-      }
     }, 800);
   };
 
@@ -133,12 +315,17 @@ function App() {
       </header>
 
       <main id="main-content">
-        <section className="hero">
+        <section className="hero" style={{ '--hero-scroll': heroScrollProgress }}>
           <div className="container hero-grid">
             <div className="hero-text">
-              <h2>Full-Stack Web Developer</h2>
-              <p className="lead">Hi, I&apos;m Caden, a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve developed 4+ production-ready applications, including a real-time messaging platform and computer vision systems.</p>
-              <p className="lead">My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building up scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
+              <p className="hero-kicker">Full-Stack Developer</p>
+              <h2 className="hero-headline">
+                Hi, I&apos;m <span>Caden Dengel</span>.
+                <br />
+                I build web applications and the infrastructure that runs them.
+              </h2>
+              <p className="lead">My projects focus on solving practical problems, like automating personal tasks, building full-stack tools, and deploying software using modern cloud infrastructure.</p>
+              <p className="lead">I enjoy working across the stack: designing APIs, building intuitive interfaces, and figuring out how to deploy systems reliably.</p>
               <div className="hero-meta">
                 <span className="location">San Marcos/Kyle/South Austin, TX Area</span>
                 <span className="separator">•</span>
@@ -155,8 +342,10 @@ function App() {
               </p>
             </div>
 
-            <div className="hero-image">
-              <img src="/img/Profile_Picture.jpg" alt="Caden Dengel professional headshot" loading="eager" />
+            <div className="hero-image" style={{ transform: `translateY(${heroScrollProgress * -28}px)` }}>
+              <div className="hero-image-shell">
+                <img src="/img/Profile_Picture.jpg" alt="Caden Dengel professional headshot" loading="eager" />
+              </div>
             </div>
           </div>
         </section>
@@ -204,26 +393,109 @@ function App() {
           <div className="project-list">
             {projects.map(p => (
               <article key={p.id} className="project-card">
-                <div className="project-image-placeholder">
-                  <img src={p.image} alt={`${p.title} project screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
-                </div>
-                <div className="project-content">
-                  <div className="project-header">
-                    <h4>{p.title}</h4>
-                    <span className="project-meta">{p.date} • {p.role}</span>
-                  </div>
-                  <p>{p.description}</p>
-                  <div className="project-tech">
-                    {p.tech.map(tech => (
-                      <span key={tech} className="tech-badge">{tech}</span>
-                    ))}
+                <div className="project-image-wrap">
+                  <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
+                  <div className="project-image-overlay">
+                    <span>Project Preview</span>
                   </div>
                 </div>
-                <div className="project-actions">
-                  <a href={p.link} target="_blank" rel="noreferrer">View Project →</a>
+                <div className="project-card-body">
+                  <h4 className="project-title">{p.title}</h4>
+                  <p className="project-summary">{p.summary}</p>
+                  <button className="project-details-btn" onClick={() => openProjectDetails(p)} aria-label={`View details for ${p.title}`}>View Details →</button>
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        {selectedProject && (
+          <div className="modal-overlay" onClick={closeProjectDetails}>
+            <div
+              className="modal-panel"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={handleModalKeyDown}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`project-modal-title-${selectedProject.id}`}
+              ref={modalPanelRef}
+            >
+              <button ref={modalCloseRef} className="modal-close" onClick={closeProjectDetails} aria-label="Close details">✕</button>
+              <h3 id={`project-modal-title-${selectedProject.id}`} className="modal-title">{selectedProject.title}</h3>
+              <p className="modal-summary">{selectedProject.summary}</p>
+
+              <div className="modal-section">
+                <h4>Tech Stack</h4>
+                <div className="project-tech">
+                  {selectedProject.tech.map(t => <span key={t} className="tech-badge">{t}</span>)}
+                </div>
+              </div>
+
+              <div className="modal-section">
+                <h4>Key Features</h4>
+                <ul className="project-features">
+                  {selectedProject.keyFeatures.map((f, i) => <li key={i}>{f}</li>)}
+                </ul>
+              </div>
+
+              <div className="modal-section">
+                <h4>Challenge</h4>
+                <p className="modal-challenge">{selectedProject.challenge}</p>
+              </div>
+
+              <div className="modal-section">
+                <h4>Links</h4>
+                <div className="modal-links">
+                  {selectedProject.demoLink && (
+                    <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-demo">Live Demo →</a>
+                  )}
+                  {selectedProject.repoLink && (
+                    <a href={selectedProject.repoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <section className="about">
+          <div className="container about-layout">
+            <div className="about-content">
+              <h3>About Me</h3>
+              <p>I&apos;m a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve built multiple deployed applications, including a real-time messaging platform and computer vision systems.</p>
+              <p>My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
+            </div>
+
+            <aside className="traffic-card" aria-live="polite">
+              <p className="traffic-label">Website Traffic</p>
+              <div className="traffic-metrics">
+                <div className="traffic-metric">
+                  <p className="traffic-metric-label">Raw Page Loads</p>
+                  <p className="traffic-value">
+                    {isTrafficLoading && 'Loading...'}
+                    {!isTrafficLoading && !trafficError && rawPageLoadCount !== null && rawPageLoadCount.toLocaleString()}
+                    {!isTrafficLoading && !trafficError && rawPageLoadCount === null && '--'}
+                    {!isTrafficLoading && trafficError && '--'}
+                  </p>
+                </div>
+                <div className="traffic-metric">
+                  <p className="traffic-metric-label">Unique Sessions</p>
+                  <p className="traffic-value">
+                    {isTrafficLoading && 'Loading...'}
+                    {!isTrafficLoading && !trafficError && uniqueSessionCount !== null && uniqueSessionCount.toLocaleString()}
+                    {!isTrafficLoading && !trafficError && uniqueSessionCount === null && '--'}
+                    {!isTrafficLoading && trafficError && '--'}
+                  </p>
+                </div>
+              </div>
+              {!isTrafficLoading && !trafficError && trafficUpdatedAt && (
+                <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
+              )}
+              <p className="traffic-caption">
+                Raw page loads track every load. Unique sessions increment once per 30-minute timestamp window per browser session.
+              </p>
+              {trafficError && <p className="traffic-error">{trafficError}</p>}
+            </aside>
           </div>
         </section>
 
@@ -233,7 +505,7 @@ function App() {
         <div className="container footer-content">
           <div className="footer-contact">
             <span className="footer-label">Get In Touch</span>
-            <a className="footer-email" href={gmailLink} onClick={handleContactClick}>caden.d.dengel@gmail.com</a>
+            <a className="footer-email" href={mailtoLink}>caden.d.dengel@gmail.com</a>
           </div>
           <div className="footer-location">
             San Marcos/Kyle/South Austin, TX Area • Available for Full-Time & Contract Work
