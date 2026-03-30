@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Counter } from 'counterapi'
 import './App.css'
 
 function App() {
@@ -71,7 +72,6 @@ function App() {
   const [isTrafficLoading, setIsTrafficLoading] = useState(true);
   const [trafficError, setTrafficError] = useState('');
   const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
-  const [trafficSource, setTrafficSource] = useState('');
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const modalPanelRef = useRef(null);
   const modalCloseRef = useRef(null);
@@ -141,45 +141,39 @@ function App() {
     let isMounted = true;
     const counterNamespace = 'cadendengel-portfolio';
     const counterName = 'website-visitors';
-    const hitCooldownMs = 30 * 60 * 1000;
-    const lastHitKey = 'portfolio-traffic-last-hit-at';
+    const pageLoadGuardKey = '__cadendengelPortfolioLoadCounted__';
+    const counter = new Counter({ version: 'v1', namespace: counterNamespace });
 
     const trackVisit = async () => {
-      const now = Date.now();
-      const lastHitAt = Number.parseInt(localStorage.getItem(lastHitKey) || '0', 10) || 0;
-      const shouldIncrement = now - lastHitAt >= hitCooldownMs;
+      const hasCountedThisLoad = window[pageLoadGuardKey] === true;
+      const shouldIncrement = !hasCountedThisLoad;
+
+      if (shouldIncrement) {
+        window[pageLoadGuardKey] = true;
+      }
 
       try {
-        const endpoint = shouldIncrement
-          ? `https://api.counterapi.dev/v1/${counterNamespace}/${counterName}/up`
-          : `https://api.counterapi.dev/v1/${counterNamespace}/${counterName}`;
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error('Traffic API unavailable');
-        const data = await response.json();
-        const parsedCount = Number.parseInt(String(data?.count ?? ''), 10);
+        const result = shouldIncrement
+          ? await counter.up(counterName)
+          : await counter.get(counterName);
+
+        const rawCount = result?.value ?? result?.data ?? result?.count;
+        const parsedCount = Number.parseInt(String(rawCount ?? ''), 10);
+
         if (isMounted) {
-          if (shouldIncrement) {
-            localStorage.setItem(lastHitKey, String(now));
-          }
           setVisitorCount(Number.isFinite(parsedCount) ? parsedCount : null);
           setTrafficUpdatedAt(new Date().toLocaleString());
           setTrafficError('');
-          setTrafficSource(shouldIncrement ? 'global' : 'global-cached');
         }
       } catch {
-        if (isMounted) {
-          const localCounterKey = 'portfolio-local-visitor-count';
-          const currentLocalCount = Number.parseInt(localStorage.getItem(localCounterKey) || '0', 10) || 0;
-          const nextLocalCount = shouldIncrement ? currentLocalCount + 1 : currentLocalCount;
-          if (shouldIncrement) {
-            localStorage.setItem(lastHitKey, String(now));
-            localStorage.setItem(localCounterKey, String(nextLocalCount));
-          }
+        if (shouldIncrement) {
+          delete window[pageLoadGuardKey];
+        }
 
-          setVisitorCount(nextLocalCount);
-          setTrafficUpdatedAt(new Date().toLocaleString());
-          setTrafficSource(shouldIncrement ? 'local' : 'local-cached');
-          setTrafficError('');
+        if (isMounted) {
+          setVisitorCount(null);
+          setTrafficUpdatedAt('');
+          setTrafficError('Traffic counter is temporarily unavailable. Try again in a moment.');
         }
       } finally {
         if (isMounted) {
@@ -424,11 +418,7 @@ function App() {
                 <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
               )}
               <p className="traffic-caption">
-                {trafficSource === 'global' && 'Total visits tracked for this portfolio.'}
-                {trafficSource === 'global-cached' && 'Recently viewed, so this visit was not counted again.'}
-                {trafficSource === 'local' && 'Local development estimate (API unavailable).'}
-                {trafficSource === 'local-cached' && 'Using your local estimate without counting another refresh.'}
-                {!trafficSource && 'Total visits tracked for this portfolio.'}
+                Total page loads tracked globally for this site.
               </p>
               {trafficError && <p className="traffic-error">{trafficError}</p>}
             </aside>
