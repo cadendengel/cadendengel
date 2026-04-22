@@ -87,6 +87,7 @@ export const handler = async (event) => {
     });
 
     const bodyText = await upstreamResponse.text();
+    console.log('Upstream status:', upstreamResponse.status, 'Body length:', bodyText.length, 'URL:', upstreamUrl);
     const contentType = upstreamResponse.headers.get('content-type') || 'application/json; charset=utf-8';
 
     return {
@@ -99,6 +100,7 @@ export const handler = async (event) => {
       body: bodyText,
     };
   } catch (error) {
+    console.error('Fetch error:', error.message, 'Type:', error.name, 'URL:', upstreamUrl);
     const isTimeout = error?.name === 'AbortError';
     return makeJsonResponse(isTimeout ? 504 : 502, {
       error: isTimeout ? 'Counter upstream timed out' : 'Counter upstream unavailable',
