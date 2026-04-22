@@ -66,6 +66,47 @@ This site can be deployed to any static hosting service:
 - AWS S3 + CloudFront
 - GitHub Pages
 
+### Counter API Proxy Requirement
+
+Traffic counters are requested from `/api/counter/...` on the same origin to avoid browser CORS errors.
+
+- Development is already handled by Vite proxy in `vite.config.js`.
+- Production must configure a reverse proxy/edge function so `/api/counter/*` forwards to `https://api.counterapi.dev/*`.
+
+#### AWS S3 Hosting
+
+S3 static website hosting alone cannot proxy `/api/counter/*`.
+
+- Put CloudFront in front of your S3 bucket.
+- Add a behavior for path pattern `/api/counter/*`.
+- Route that behavior to a backend that can proxy to `https://api.counterapi.dev/*` (for example API Gateway + Lambda, or a custom origin that performs the forward).
+- Keep your site assets (`/*`) routed to the S3 origin.
+
+#### Deploy Included Lambda Proxy (SAM)
+
+This repo includes a Lambda proxy at `infrastructure/counter-proxy/index.mjs` and a SAM template at `infrastructure/counter-proxy/template.yaml`.
+
+1. Install the AWS SAM CLI.
+2. From repo root, build and deploy:
+
+```bash
+sam build -t infrastructure/counter-proxy/template.yaml
+sam deploy \
+	--stack-name cadendengel-counter-proxy \
+	--resolve-s3 \
+	--capabilities CAPABILITY_IAM \
+	--parameter-overrides AllowedOrigin=https://cadendengel.com
+```
+
+3. After deploy, copy the `CounterProxyApiUrl` output.
+4. In CloudFront:
+	 - Add an origin pointing to your API Gateway domain (the host part of `CounterProxyApiUrl`).
+	 - Add behavior `/api/counter/*` to that origin.
+	 - Set viewer protocol policy to `Redirect HTTP to HTTPS`.
+	 - Disable caching for this behavior (Managed-CachingDisabled recommended).
+
+Once that is live, browser calls to `/api/counter/...` stay same-origin and no longer hit CORS blocks.
+
 ## Contact
 
 Caden Dengel - caden.d.dengel@gmail.com

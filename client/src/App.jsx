@@ -70,12 +70,18 @@ function App() {
   const [rawPageLoadCount, setRawPageLoadCount] = useState(null);
   const [uniqueSessionCount, setUniqueSessionCount] = useState(null);
   const [isTrafficLoading, setIsTrafficLoading] = useState(true);
-  const [trafficError, setTrafficError] = useState('');
+  const [showTrafficFallback, setShowTrafficFallback] = useState(false);
   const [trafficUpdatedAt, setTrafficUpdatedAt] = useState('');
   const [heroScrollProgress, setHeroScrollProgress] = useState(0);
   const modalPanelRef = useRef(null);
   const modalCloseRef = useRef(null);
   const lastFocusedElementRef = useRef(null);
+  const uniqueTechCount = new Set(projects.flatMap((project) => project.tech)).size;
+  const portfolioSnapshot = [
+    { label: 'Projects Featured', value: projects.length.toLocaleString() },
+    { label: 'Technologies Used', value: uniqueTechCount.toLocaleString() },
+    { label: 'Core Skill Areas', value: Object.keys(skills).length.toLocaleString() },
+  ];
 
   const closeProjectDetails = () => {
     setSelectedProject(null);
@@ -145,12 +151,11 @@ function App() {
     const pageLoadGuardKey = '__cadendengelPortfolioRawLoadCounted__';
     const sessionTimestampStorageKey = '__cadendengelPortfolioSessionTimestamp__';
     const sessionWindowMs = 30 * 60 * 1000;
-    const counterApiBase = import.meta.env.DEV ? '/api/counter' : 'https://api.counterapi.dev';
+    const counterApiBase = '/api/counter';
 
     const requestCounter = async (counterName, shouldIncrement) => {
       const counterPath = shouldIncrement ? `${counterName}/up` : `${counterName}/`;
       const endpoint = `${counterApiBase}/v1/${counterNamespace}/${counterPath}`;
-      const proxyEndpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(endpoint)}`;
 
       const attemptRequest = async (url) => {
         const response = await fetch(url, {
@@ -167,15 +172,7 @@ function App() {
         return response.json();
       };
 
-      if (import.meta.env.DEV) {
-        return attemptRequest(endpoint);
-      }
-
-      try {
-        return await attemptRequest(endpoint);
-      } catch {
-        return attemptRequest(proxyEndpoint);
-      }
+      return attemptRequest(endpoint);
     };
 
     const parseCounterValue = (counterResponse) => {
@@ -217,7 +214,7 @@ function App() {
           setRawPageLoadCount(parseCounterValue(rawPageLoadResult));
           setUniqueSessionCount(parseCounterValue(uniqueSessionResult));
           setTrafficUpdatedAt(new Date().toLocaleString());
-          setTrafficError('');
+          setShowTrafficFallback(false);
         }
       } catch {
         if (shouldIncrementRawLoad) {
@@ -232,7 +229,7 @@ function App() {
           setRawPageLoadCount(null);
           setUniqueSessionCount(null);
           setTrafficUpdatedAt('');
-          setTrafficError('Traffic counter is temporarily unavailable. Try again in a moment.');
+          setShowTrafficFallback(true);
         }
       } finally {
         if (isMounted) {
@@ -467,34 +464,50 @@ function App() {
             </div>
 
             <aside className="traffic-card" aria-live="polite">
-              <p className="traffic-label">Website Traffic</p>
-              <div className="traffic-metrics">
-                <div className="traffic-metric">
-                  <p className="traffic-metric-label">Raw Page Loads</p>
-                  <p className="traffic-value">
-                    {isTrafficLoading && 'Loading...'}
-                    {!isTrafficLoading && !trafficError && rawPageLoadCount !== null && rawPageLoadCount.toLocaleString()}
-                    {!isTrafficLoading && !trafficError && rawPageLoadCount === null && '--'}
-                    {!isTrafficLoading && trafficError && '--'}
+              <p className="traffic-label">{showTrafficFallback ? 'Portfolio Snapshot' : 'Website Traffic'}</p>
+              {!showTrafficFallback && (
+                <>
+                  <div className="traffic-metrics">
+                    <div className="traffic-metric">
+                      <p className="traffic-metric-label">Raw Page Loads</p>
+                      <p className="traffic-value">
+                        {isTrafficLoading && 'Loading...'}
+                        {!isTrafficLoading && rawPageLoadCount !== null && rawPageLoadCount.toLocaleString()}
+                        {!isTrafficLoading && rawPageLoadCount === null && '--'}
+                      </p>
+                    </div>
+                    <div className="traffic-metric">
+                      <p className="traffic-metric-label">Unique Sessions</p>
+                      <p className="traffic-value">
+                        {isTrafficLoading && 'Loading...'}
+                        {!isTrafficLoading && uniqueSessionCount !== null && uniqueSessionCount.toLocaleString()}
+                        {!isTrafficLoading && uniqueSessionCount === null && '--'}
+                      </p>
+                    </div>
+                  </div>
+                  {!isTrafficLoading && trafficUpdatedAt && (
+                    <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
+                  )}
+                  <p className="traffic-caption">
+                    Raw page loads track every load. Unique sessions increment once per 30-minute timestamp window per browser session.
                   </p>
-                </div>
-                <div className="traffic-metric">
-                  <p className="traffic-metric-label">Unique Sessions</p>
-                  <p className="traffic-value">
-                    {isTrafficLoading && 'Loading...'}
-                    {!isTrafficLoading && !trafficError && uniqueSessionCount !== null && uniqueSessionCount.toLocaleString()}
-                    {!isTrafficLoading && !trafficError && uniqueSessionCount === null && '--'}
-                    {!isTrafficLoading && trafficError && '--'}
-                  </p>
-                </div>
-              </div>
-              {!isTrafficLoading && !trafficError && trafficUpdatedAt && (
-                <p className="traffic-updated">Last updated: {trafficUpdatedAt}</p>
+                </>
               )}
-              <p className="traffic-caption">
-                Raw page loads track every load. Unique sessions increment once per 30-minute timestamp window per browser session.
-              </p>
-              {trafficError && <p className="traffic-error">{trafficError}</p>}
+              {showTrafficFallback && (
+                <>
+                  <div className="traffic-metrics traffic-metrics-fallback">
+                    {portfolioSnapshot.map((item) => (
+                      <div className="traffic-metric" key={item.label}>
+                        <p className="traffic-metric-label">{item.label}</p>
+                        <p className="traffic-value traffic-value-neutral">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="traffic-caption">
+                    A quick look at my current portfolio highlights.
+                  </p>
+                </>
+              )}
             </aside>
           </div>
         </section>
