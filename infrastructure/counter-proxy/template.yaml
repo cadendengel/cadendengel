@@ -56,6 +56,14 @@ Resources:
             Path: /api/counter/{proxy+}
             Method: OPTIONS
 
+  CounterProxyInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CounterProxyFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${CounterProxyApi}/*/*
+
 Outputs:
   CounterProxyApiUrl:
     Description: Invoke URL for the counter proxy HTTP API.
