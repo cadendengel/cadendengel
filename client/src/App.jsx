@@ -211,10 +211,14 @@ function App() {
         ]);
 
         if (isMounted) {
-          setRawPageLoadCount(parseCounterValue(rawPageLoadResult));
-          setUniqueSessionCount(parseCounterValue(uniqueSessionResult));
-          setTrafficUpdatedAt(new Date().toLocaleString());
-          setShowTrafficFallback(false);
+          const parsedRawPageLoadCount = parseCounterValue(rawPageLoadResult);
+          const parsedUniqueSessionCount = parseCounterValue(uniqueSessionResult);
+          const shouldShowFallbackSnapshot = parsedRawPageLoadCount === null || parsedUniqueSessionCount === null;
+
+          setRawPageLoadCount(parsedRawPageLoadCount);
+          setUniqueSessionCount(parsedUniqueSessionCount);
+          setTrafficUpdatedAt(shouldShowFallbackSnapshot ? '' : new Date().toLocaleString());
+          setShowTrafficFallback(shouldShowFallbackSnapshot);
         }
       } catch {
         if (shouldIncrementRawLoad) {

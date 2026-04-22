@@ -88,6 +88,14 @@ export const handler = async (event) => {
 
     const bodyText = await upstreamResponse.text();
     console.log('Upstream status:', upstreamResponse.status, 'Body length:', bodyText.length, 'URL:', upstreamUrl);
+
+    if (upstreamResponse.status >= 500) {
+      return makeJsonResponse(200, {
+        value: null,
+        unavailable: true,
+      });
+    }
+
     const contentType = upstreamResponse.headers.get('content-type') || 'application/json; charset=utf-8';
 
     return {
