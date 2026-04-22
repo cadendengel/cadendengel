@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Counter API proxy for cadendengel.com
+Parameters:
+  AllowedOrigin:
+    Type: String
+    Default: https://cadendengel.com
+    Description: Allowed browser origin for CORS responses.
+Resources:
+  CounterProxyApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+        - Ref: AllowedOrigin
+        AllowMethods:
+        - GET
+        - OPTIONS
+        AllowHeaders:
+        - Content-Type
+        - Accept
+  CounterProxyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: cadendengel-counter-proxy
+      Runtime: nodejs20.x
+      Handler: index.handler
+      CodeUri: CounterProxyFunction
+      Timeout: 10
+      MemorySize: 128
+      Environment:
+        Variables:
+          ALLOWED_ORIGIN:
+            Ref: AllowedOrigin
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      Events:
+        CounterRoot:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: CounterProxyApi
+            Path: /api/counter
+            Method: GET
+        CounterProxyGet:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: CounterProxyApi
+            Path: /api/counter/{proxy+}
+            Method: GET
+        CounterProxyOptions:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: CounterProxyApi
+            Path: /api/counter/{proxy+}
+            Method: OPTIONS
+    Metadata:
+      SamResourceId: CounterProxyFunction
+Outputs:
+  CounterProxyApiUrl:
+    Description: Invoke URL for the counter proxy HTTP API.
+    Value:
+      Fn::Sub: https://${CounterProxyApi}.execute-api.${AWS::Region}.amazonaws.com

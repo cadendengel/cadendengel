@@ -40,3 +40,37 @@ jobs:
 
       - name: Deploy to S3
         run: aws s3 sync dist/ s3://cadendengel/ --delete
+
+  deploy-counter-proxy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SAM
+        uses: aws-actions/setup-sam@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::271995868497:role/TrustPolicy_cadendengel
+          aws-region: us-east-2
+
+      - name: Build counter proxy
+        run: sam build -t infrastructure/counter-proxy/template.yaml
+
+      - name: Deploy counter proxy stack
+        run: |
+          sam deploy \
+            --template-file .aws-sam/build/template.yaml \
+            --stack-name cadendengel-counter-proxy \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides AllowedOrigin=https://cadendengel.com \
+            --region us-east-2 \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset
