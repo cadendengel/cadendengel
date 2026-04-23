@@ -9,6 +9,18 @@ Parameters:
     Description: Allowed browser origin for CORS responses.
 
 Resources:
+  CounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: cadendengel-portfolio-counters
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: counterId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: counterId
+          KeyType: HASH
+
   CounterProxyApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -34,8 +46,11 @@ Resources:
       Environment:
         Variables:
           ALLOWED_ORIGIN: !Ref AllowedOrigin
+          COUNTER_TABLE_NAME: !Ref CounterTable
       Policies:
         - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CounterTable
       Events:
         CounterRoot:
           Type: HttpApi
@@ -68,3 +83,7 @@ Outputs:
   CounterProxyApiUrl:
     Description: Invoke URL for the counter proxy HTTP API.
     Value: !Sub https://${CounterProxyApi}.execute-api.${AWS::Region}.amazonaws.com
+
+  CounterTableName:
+    Description: DynamoDB table used for portfolio counters.
+    Value: !Ref CounterTable

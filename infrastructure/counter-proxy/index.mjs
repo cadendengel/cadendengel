@@ -1,7 +1,12 @@
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+
 const DEFAULT_ALLOWED_ORIGIN = 'https://cadendengel.com';
-const COUNTER_API_BASE = 'https://api.counterapi.dev';
 const API_PREFIX = '/api/counter';
-const REQUEST_TIMEOUT_MS = 8000;
+const TABLE_NAME = process.env.COUNTER_TABLE_NAME;
+
+const dynamoClient = new DynamoDBClient({});
+const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
 const buildCorsHeaders = () => {
   const allowedOrigin = process.env.ALLOWED_ORIGIN || DEFAULT_ALLOWED_ORIGIN;
@@ -30,20 +35,27 @@ const resolveProxyPath = (event) => {
   return stripApiPrefix(rawPath);
 };
 
-const resolveQueryString = (event) => {
-  if (event?.rawQueryString) {
-    return event.rawQueryString;
+const parseCounterRoute = (counterPath) => {
+  const parts = counterPath.split('/').filter(Boolean);
+  if (parts.length < 3 || parts[0] !== 'v1') {
+    return null;
   }
 
-  const query = event?.queryStringParameters;
-  if (!query || typeof query !== 'object') return '';
+  const [, namespace, counterName, action] = parts;
+  const shouldIncrement = action === 'up';
 
-  return new URLSearchParams(
-    Object.entries(query)
-      .filter(([, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => [key, String(value)])
-  ).toString();
+  if (!namespace || !counterName || (action && action !== 'up')) {
+    return null;
+  }
+
+  return {
+    namespace,
+    counterName,
+    shouldIncrement,
+  };
 };
+
+const makeCounterKey = (namespace, counterName) => `${namespace}#${counterName}`;
 
 const makeJsonResponse = (statusCode, payload) => ({
   statusCode,
@@ -70,50 +82,57 @@ export const handler = async (event) => {
     return makeJsonResponse(405, { error: 'Method not allowed' });
   }
 
-  const upstreamPath = resolveProxyPath(event);
-  const queryString = resolveQueryString(event);
-  const upstreamUrl = `${COUNTER_API_BASE}${upstreamPath}${queryString ? `?${queryString}` : ''}`;
+  if (!TABLE_NAME) {
+    return makeJsonResponse(500, { error: 'Counter table is not configured' });
+  }
 
-  const abortController = new AbortController();
-  const timeout = setTimeout(() => abortController.abort(), REQUEST_TIMEOUT_MS);
+  const counterPath = resolveProxyPath(event);
+  const route = parseCounterRoute(counterPath);
+
+  if (!route) {
+    return makeJsonResponse(400, { error: 'Invalid counter path' });
+  }
+
+  const counterId = makeCounterKey(route.namespace, route.counterName);
 
   try {
-    const upstreamResponse = await fetch(upstreamUrl, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-      signal: abortController.signal,
-    });
+    if (route.shouldIncrement) {
+      const updateResult = await docClient.send(
+        new UpdateCommand({
+          TableName: TABLE_NAME,
+          Key: { counterId },
+          UpdateExpression: 'SET #value = if_not_exists(#value, :start) + :increment, #updatedAt = :updatedAt',
+          ExpressionAttributeNames: {
+            '#value': 'value',
+            '#updatedAt': 'updatedAt',
+          },
+          ExpressionAttributeValues: {
+            ':start': 0,
+            ':increment': 1,
+            ':updatedAt': new Date().toISOString(),
+          },
+          ReturnValues: 'UPDATED_NEW',
+        })
+      );
 
-    const bodyText = await upstreamResponse.text();
-    console.log('Upstream status:', upstreamResponse.status, 'Body length:', bodyText.length, 'URL:', upstreamUrl);
-
-    if (upstreamResponse.status >= 500) {
       return makeJsonResponse(200, {
-        value: null,
-        unavailable: true,
+        value: Number(updateResult.Attributes?.value ?? 0),
       });
     }
 
-    const contentType = upstreamResponse.headers.get('content-type') || 'application/json; charset=utf-8';
+    const getResult = await docClient.send(
+      new GetCommand({
+        TableName: TABLE_NAME,
+        Key: { counterId },
+      })
+    );
 
-    return {
-      statusCode: upstreamResponse.status,
-      headers: {
-        ...buildCorsHeaders(),
-        'Content-Type': contentType,
-        'Cache-Control': 'no-store',
-      },
-      body: bodyText,
-    };
-  } catch (error) {
-    console.error('Fetch error:', error.message, 'Type:', error.name, 'URL:', upstreamUrl);
-    const isTimeout = error?.name === 'AbortError';
-    return makeJsonResponse(isTimeout ? 504 : 502, {
-      error: isTimeout ? 'Counter upstream timed out' : 'Counter upstream unavailable',
+    return makeJsonResponse(200, {
+      value: Number(getResult.Item?.value ?? 0),
     });
-  } finally {
-    clearTimeout(timeout);
+  } catch {
+    return makeJsonResponse(500, {
+      error: 'Counter service unavailable',
+    });
   }
 };
