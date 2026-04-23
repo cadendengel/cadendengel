@@ -57,6 +57,14 @@
         "iam:UntagRole"
       ],
       "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontInvalidation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateInvalidation"
+      ],
+      "Resource": "arn:aws:cloudfront::271995868497:distribution/EEFQOLPBESWP"
     }
   ]
 }
