@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/img/cdl.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--- SEO Meta Tags -->
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Caden Dengel - Full-stack Web Developer and Computer Science graduate specializing in React, Node.js, and modern web technologies. View my portfolio and projects." />
     <meta name="author" content="Caden Dengel" />
     <link rel="canonical" href="https://cadendengel.com/" />
@@ -18,12 +18,25 @@
     <meta property="og:image:alt" content="Caden Dengel headshot" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://cadendengel.com/" />
-    <meta property="twitter:title" content="Caden Dengel - Web Developer Portfolio" />
-    <meta property="twitter:description" content="Full-stack Web Developer and Computer Science graduate specializing in React, Node.js, and modern web technologies." />
-    <meta property="twitter:image" content="https://cadendengel.com/img/Profile_Picture.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://cadendengel.com/" />
+    <meta name="twitter:title" content="Caden Dengel - Web Developer Portfolio" />
+    <meta name="twitter:description" content="Full-stack Web Developer and Computer Science graduate specializing in React, Node.js, and modern web technologies." />
+    <meta name="twitter:image" content="https://cadendengel.com/img/Profile_Picture.jpg" />
     
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" />
+
+    <!-- Apply saved/system theme before first paint to avoid a light-mode flash -->
+    <script>
+      try {
+        document.documentElement.setAttribute('data-theme',
+          localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      } catch (e) {}
+    </script>
+
     <title>Caden Dengel - Web Developer Portfolio</title>
   </head>
   <body>

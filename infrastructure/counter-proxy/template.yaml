@@ -38,7 +38,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: cadendengel-counter-proxy
-      Runtime: nodejs20.x
+      Runtime: nodejs22.x
       Handler: index.handler
       CodeUri: ./
       Timeout: 10

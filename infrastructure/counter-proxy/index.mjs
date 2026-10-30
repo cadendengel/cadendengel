@@ -4,6 +4,11 @@ import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from '@aws-sdk/lib-
 const DEFAULT_ALLOWED_ORIGIN = 'https://cadendengel.com';
 const API_PREFIX = '/api/counter';
 const TABLE_NAME = process.env.COUNTER_TABLE_NAME;
+// Only these counters may be read or incremented, so the table can't be filled with arbitrary keys
+const ALLOWED_COUNTERS = new Set([
+  'cadendengel-portfolio#website-page-loads',
+  'cadendengel-portfolio#website-unique-sessions',
+]);
 
 const dynamoClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(dynamoClient);
@@ -94,6 +99,10 @@ export const handler = async (event) => {
   }
 
   const counterId = makeCounterKey(route.namespace, route.counterName);
+
+  if (!ALLOWED_COUNTERS.has(counterId)) {
+    return makeJsonResponse(404, { error: 'Unknown counter' });
+  }
 
   try {
     if (route.shouldIncrement) {

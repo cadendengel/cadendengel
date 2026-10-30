@@ -1,70 +1,77 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const projects = [
+  {
+    id: 'fibersync',
+    title: 'FiberSync',
+    summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
+    keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
+    challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
+    demoLink: 'https://fibersync-fd2e2.web.app/',
+    repoLink: 'https://github.com/cadendengel/FiberSync/',
+    image: '/img/fibersync-preview.jpg'
+  },
+  {
+    id: 'meal-prep-pantry',
+    title: 'Meal Prep Pantry',
+    summary: 'A full-stack web application that automates meal planning using grocery store product data.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
+    keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
+    challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
+    demoLink: 'https://meal-prep-pantry.vercel.app/',
+    repoLink: 'https://github.com/cadendengel/meal-prep-pantry/',
+    image: '/img/meal-prep-pantry-preview.jpg'
+  },
+  {
+    id: 'visionary',
+    title: 'Visionary',
+    summary: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
+    tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
+    keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
+    challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
+    repoLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
+    image: '/img/visionary-preview.jpg'
+  },
+  {
+    id: 'mle-healthcare-extension',
+    title: 'MLE Healthcare Extension',
+    summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
+    tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
+    keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
+    challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
+    repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
+    image: '/img/mle-preview.jpg'
+  },
+  {
+    id: 'eng3303proj4',
+    title: 'GitHub Accessibility Redesign',
+    summary: 'Redesigned GitHub repository page with enhanced accessibility features following some of the WCAG standards.',
+    tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
+    keyFeatures: ['WCAG compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
+    challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
+    demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
+    image: '/img/github-redesign-preview.jpg'
+  },
+];
+
+const skills = {
+  frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite'],
+  backend: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'REST APIs'],
+  languages: ['JavaScript', 'Python', 'C++', 'C', 'Java', 'C#'],
+  tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS']
+};
+
+const emailAddress = 'caden.d.dengel@gmail.com';
+const mailtoLink = `mailto:${emailAddress}`;
+
+const getInitialTheme = () =>
+  localStorage.getItem('theme') ||
+  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
 function App() {
-  const [projects] = useState([
-    {
-      id: 'fibersync',
-      title: 'FiberSync',
-      summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
-      tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
-      keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
-      challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
-      demoLink: 'https://fibersync-fd2e2.web.app/',
-      repoLink: 'https://github.com/cadendengel/FiberSync/',
-      image: '/img/fibersync-preview.jpg'
-    },
-    {
-      id: 'meal-prep-pantry',
-      title: 'Meal Prep Pantry',
-      summary: 'A full-stack web application that automates meal planning using grocery store product data.',
-      tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
-      keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
-      challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
-      demoLink: 'https://meal-prep-pantry.vercel.app/',
-      repoLink: 'https://github.com/cadendengel/meal-prep-pantry/',
-      image: '/img/meal-prep-pantry-preview.jpg'
-    },
-    {
-      id: 'visionary',
-      title: 'Visionary',
-      summary: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
-      tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
-      keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
-      challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
-      repoLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
-      image: '/img/visionary-preview.jpg'
-    },
-    {
-      id: 'mle-healthcare-extension',
-      title: 'MLE Healthcare Extension',
-      summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
-      tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
-      keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
-      challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
-      repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
-      image: '/img/mle-preview.jpg'
-    },
-    {
-      id: 'eng3303proj4',
-      title: 'GitHub Accessibility Redesign',
-      summary: 'Redesigned GitHub repository page with enhanced accessibility features following some of the WCAG standards.',
-      tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
-      keyFeatures: ['WCAG compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
-      challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
-      demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
-      image: '/img/github-redesign-preview.jpg'
-    },
-  ]);
-
-  const skills = {
-    frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite'],
-    backend: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'REST APIs'],
-    languages: ['JavaScript', 'Python', 'C++', 'C', 'Java', 'C#'],
-    tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS']
-  };
-
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(getInitialTheme);
   const [highlightContact, setHighlightContact] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [rawPageLoadCount, setRawPageLoadCount] = useState(null);
@@ -248,10 +255,6 @@ function App() {
       isMounted = false;
     };
   }, []);
-  const emailAddress = 'caden.d.dengel@gmail.com';
-  const mailSubject = encodeURIComponent('');
-  const mailBody = encodeURIComponent('');
-  const mailtoLink = `mailto:${emailAddress}?subject=${mailSubject}&body=${mailBody}`;
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -522,7 +525,7 @@ function App() {
         <div className="container footer-content">
           <div className="footer-contact">
             <span className="footer-label">Get In Touch</span>
-            <a className="footer-email" href={mailtoLink}>caden.d.dengel@gmail.com</a>
+            <a className="footer-email" href={mailtoLink}>{emailAddress}</a>
           </div>
           <div className="footer-location">
             San Marcos/Kyle/South Austin, TX Area • Available for Full-Time & Contract Work

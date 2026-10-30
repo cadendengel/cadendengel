@@ -72,7 +72,7 @@
       "Action": [
         "cloudfront:CreateInvalidation"
       ],
-      "Resource": "arn:aws:cloudfront::271995868497:distribution/EEFQOLPBESWP"
+      "Resource": "arn:aws:cloudfront::271995868497:distribution/EEFOQLPBESWP"
     }
   ]
 }
