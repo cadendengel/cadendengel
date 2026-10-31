@@ -109,6 +109,57 @@ main > section + section::before,
   border-bottom-color: var(--accent);
 }
 
+.then-now-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.then-now-era {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.then-now-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.then-now-list li {
+  padding-left: 1.25rem;
+  position: relative;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.then-now-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.then-now-project {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.then-now-highlight {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+[data-theme="dark"] .then-now-highlight {
+  color: var(--link);
+}
+
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
@@ -530,7 +581,8 @@ main > section + section::before,
 
 /* Responsive Adjustments */
 @media (max-width: 800px) {
-  .skills-grid {
+  .skills-grid,
+  .then-now-grid {
     grid-template-columns: 1fr;
   }
   

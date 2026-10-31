@@ -35,32 +35,31 @@ const projects = [
     image: '/img/visionary-preview.jpg'
   },
   {
-    id: 'mle-healthcare-extension',
-    title: 'MLE Healthcare Extension',
-    summary: 'Extended healthcare data encryption algorithm with machine learning compatibility for multiple datasets.',
-    tech: ['Python', 'C#', 'Pandas', 'NumPy', 'Scikit-learn'],
-    keyFeatures: ['Multi-dataset compatibility', 'Data encryption', 'ML model integration', 'Security analysis', 'Statistical validation'],
-    challenge: 'Extending existing encryption algorithms to maintain compatibility with machine learning models while preserving security properties required the careful interfacing of machine learning data formats with cryptographic techniques in order to retrain model performance without exposing vulnerabilities.',
-    repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension',
-    image: '/img/mle-preview.jpg'
-  },
-  {
-    id: 'eng3303proj4',
-    title: 'GitHub Accessibility Redesign',
-    summary: 'Redesigned GitHub repository page with enhanced accessibility features following some of the WCAG standards.',
-    tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
-    keyFeatures: ['WCAG compliance', 'Keyboard navigation', 'Screen reader support', 'Improved color contrast', 'Semantic HTML'],
-    challenge: 'Implementing comprehensive accessibility improvements required understanding diverse user needs and testing with actual assistive technologies to ensure real-world usability.',
-    demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html',
-    image: '/img/github-redesign-preview.jpg'
+    id: 'pricewatch',
+    title: 'PriceWatch',
+    summary: 'A personal AI agent that hunts deals on PC parts around the clock and keeps a live dashboard of the best prices.',
+    tech: ['Claude Code', 'AI Agents', 'Python', 'eBay API', 'RSS'],
+    keyFeatures: ['Hourly price checks', 'Daily full sweep', 'Deal feeds, marketplaces, and retailers', 'Filters out junk listings', 'Live price dashboard'],
+    challenge: 'Most "deals" are noise: for-parts listings, ended auctions, out-of-stock items, and last-gen parts. The hard part was teaching the agent strict rules for what counts as a real deal so the dashboard only shows things worth buying.',
+    image: '/img/pricewatch-preview.jpg'
   },
 ];
 
-const skills = {
-  frontend: ['React', 'JavaScript', 'HTML5', 'CSS', 'Vite'],
-  backend: ['Node.js', 'Express', 'MongoDB', 'Firebase', 'REST APIs'],
-  languages: ['JavaScript', 'Python', 'C++', 'C', 'Java', 'C#'],
-  tools: ['Git', 'GitHub', 'VS Code', 'Visual Studio', 'npm', 'AWS']
+const thenNow = {
+  then: [
+    { text: 'Hand-wrote full-stack apps line by line in React, Node.js, and MongoDB', project: 'FiberSync, Meal Prep Pantry' },
+    { text: 'Trained and tuned computer-vision models in Python', project: 'Visionary' },
+    { text: 'Systems and object-oriented coursework in C++ and Java' },
+    { text: 'Tested by clicking through every screen and writing bug reports from scratch' },
+    { text: 'Deployed by hand and debugged with print statements' },
+  ],
+  now: [
+    { text: 'Design the system, direct AI agents to build it, and review every line they write' },
+    { text: 'AI-integrated QA: nearly 3× more tickets tested per day, with half as many approvals bouncing back', highlight: true },
+    { text: 'Build tools that make agents better at real work: plugins, integrations, and automated test runs' },
+    { text: 'Run AI agents that work for me in the background', project: 'PriceWatch' },
+    { text: 'Automate the boring parts: CI/CD, serverless cloud, and infrastructure as code', project: 'this site' },
+  ],
 };
 
 const emailAddress = 'caden.d.dengel@gmail.com';
@@ -87,7 +86,6 @@ function App() {
   const portfolioSnapshot = [
     { label: 'Projects Featured', value: projects.length.toLocaleString() },
     { label: 'Technologies Used', value: uniqueTechCount.toLocaleString() },
-    { label: 'Core Skill Areas', value: Object.keys(skills).length.toLocaleString() },
   ];
 
   const closeProjectDetails = () => {
@@ -353,39 +351,29 @@ function App() {
         </section>
 
         <section id="skills" className="container skills">
-          <h3>Technical Skills</h3>
-          <div className="skills-grid">
+          <h3>Then &amp; Now</h3>
+          <div className="then-now-grid">
             <div className="skill-category">
-              <h4>Frontend</h4>
-              <div className="skill-tags">
-                {skills.frontend.map(skill => (
-                  <span key={skill} className="skill-tag">{skill}</span>
+              <h4>What I used to do <span className="then-now-era">(through 2025)</span></h4>
+              <ul className="then-now-list">
+                {thenNow.then.map(item => (
+                  <li key={item.text}>
+                    {item.text}
+                    {item.project && <span className="then-now-project"> → {item.project}</span>}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
             <div className="skill-category">
-              <h4>Backend</h4>
-              <div className="skill-tags">
-                {skills.backend.map(skill => (
-                  <span key={skill} className="skill-tag">{skill}</span>
+              <h4>What I do now</h4>
+              <ul className="then-now-list">
+                {thenNow.now.map(item => (
+                  <li key={item.text} className={item.highlight ? 'then-now-highlight' : undefined}>
+                    {item.text}
+                    {item.project && <span className="then-now-project"> → {item.project}</span>}
+                  </li>
                 ))}
-              </div>
-            </div>
-            <div className="skill-category">
-              <h4>Languages</h4>
-              <div className="skill-tags">
-                {skills.languages.map(skill => (
-                  <span key={skill} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-            <div className="skill-category">
-              <h4>Tools & Platforms</h4>
-              <div className="skill-tags">
-                {skills.tools.map(skill => (
-                  <span key={skill} className="skill-tag">{skill}</span>
-                ))}
-              </div>
+              </ul>
             </div>
           </div>
         </section>
@@ -396,7 +384,7 @@ function App() {
             {projects.map(p => (
               <article key={p.id} className="project-card">
                 <div className="project-image-wrap">
-                  <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
+                  {p.image && <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />}
                   <div className="project-image-overlay">
                     <span>Project Preview</span>
                   </div>
@@ -445,17 +433,19 @@ function App() {
                 <p className="modal-challenge">{selectedProject.challenge}</p>
               </div>
 
-              <div className="modal-section">
-                <h4>Links</h4>
-                <div className="modal-links">
-                  {selectedProject.demoLink && (
-                    <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-demo">Live Demo →</a>
-                  )}
-                  {selectedProject.repoLink && (
-                    <a href={selectedProject.repoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
-                  )}
+              {(selectedProject.demoLink || selectedProject.repoLink) && (
+                <div className="modal-section">
+                  <h4>Links</h4>
+                  <div className="modal-links">
+                    {selectedProject.demoLink && (
+                      <a href={selectedProject.demoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-demo">Live Demo →</a>
+                    )}
+                    {selectedProject.repoLink && (
+                      <a href={selectedProject.repoLink} target="_blank" rel="noreferrer" className="modal-link-btn modal-link-github">GitHub →</a>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
