@@ -50,6 +50,11 @@ jobs:
       - name: Deploy index.html with no-cache headers
         run: aws s3 cp dist/index.html s3://cadendengel/index.html --cache-control "no-cache,no-store,must-revalidate" --content-type "text/html; charset=utf-8"
 
+      # Clear CloudFront's cache so updated images and the resume show up right away.
+      # A "/*" wildcard counts as one path toward the 1,000 free invalidation paths per month.
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id EEFOQLPBESWP --paths "/*"
+
   deploy-counter-proxy:
     runs-on: ubuntu-latest
     permissions:
