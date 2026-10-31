@@ -420,7 +420,7 @@ main > section + section::before,
   gap: 0.25rem;
 }
 
-.location, .availability {
+.location {
   font-weight: 500;
 }
 

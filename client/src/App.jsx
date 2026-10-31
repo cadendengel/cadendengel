@@ -332,8 +332,6 @@ function App() {
               <p className="lead">I enjoy working across the stack: designing APIs, building intuitive interfaces, and figuring out how to deploy systems reliably.</p>
               <div className="hero-meta">
                 <span className="location">San Marcos/Kyle/South Austin, TX Area</span>
-                <span className="separator">•</span>
-                <span className="availability">Currently available for hire remote or in-person</span>
               </div>
               <p>
                 <a className="primary-btn" href="#projects">View My Work</a>
@@ -528,7 +526,7 @@ function App() {
             <a className="footer-email" href={mailtoLink}>{emailAddress}</a>
           </div>
           <div className="footer-location">
-            San Marcos/Kyle/South Austin, TX Area • Available for Full-Time & Contract Work
+            San Marcos/Kyle/South Austin, TX Area
           </div>
           <small>© {new Date().getFullYear()} Caden Dengel. All rights reserved.</small>
         </div>
