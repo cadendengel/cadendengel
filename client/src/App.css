@@ -116,12 +116,6 @@ main > section + section::before,
   margin-top: 1.5rem;
 }
 
-.then-now-era {
-  font-weight: 400;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
 .then-now-list {
   list-style: none;
   margin: 0;
@@ -602,4 +596,92 @@ main > section + section::before,
   .about-layout {
     grid-template-columns: 1fr;
   }
+}
+
+/* Then & Now project links, placeholder previews, and the More Projects list */
+.then-now-project a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.then-now-project a:hover {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .then-now-project a:hover {
+  color: var(--link);
+}
+
+.project-image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+
+
+.project-card {
+  cursor: pointer;
+}
+
+/* "Get In Touch" email nudge: a small card above the footer email */
+.footer-email-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.email-nudge {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  z-index: 50;
+  padding: 0.55rem 0.9rem;
+  white-space: nowrap;
+  background: var(--card);
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  animation: email-nudge-life 4s ease forwards;
+}
+
+[data-theme="dark"] .email-nudge {
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.email-nudge::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  border: 7px solid transparent;
+  border-top-color: var(--card);
+  transform: translateX(-50%);
+}
+
+@keyframes email-nudge-life {
+  0% { opacity: 0; transform: translate(-50%, 6px); }
+  10%, 85% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .email-nudge {
+    animation-name: email-nudge-fade;
+  }
+}
+
+@keyframes email-nudge-fade {
+  0%, 100% { opacity: 0; transform: translate(-50%, 0); }
+  10%, 85% { opacity: 1; transform: translate(-50%, 0); }
 }

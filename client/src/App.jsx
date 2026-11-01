@@ -1,69 +1,145 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const projects = [
   {
     id: 'fibersync',
+    featured: true,
     title: 'FiberSync',
-    summary: 'A full-stack, real-time web messenger application with secure authentication and message persistence.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Firebase', 'WebSockets', 'Jest'],
-    keyFeatures: ['Real-time messaging', 'User authentication', 'Message persistence', 'WebSocket integration', 'Unit testing'],
-    challenge: 'Handling concurrent WebSocket connections while maintaining message order and ensuring reliable delivery across device-specific network interruptions required careful state management and reconnection logic.',
+    summary: 'A real-time chat app with channels and DMs. Built with two classmates.',
+    tech: ['React', 'Python', 'Flask', 'Socket.IO', 'MongoDB', 'Firebase Hosting', 'Render', 'Jest', 'Pytest'],
+    keyFeatures: ['Messages show up for everyone in real time', 'Channels and DMs', 'Salted, hashed passwords', 'Tests on the frontend and backend'],
+    challenge: 'We started with regular API calls and moved to WebSockets so updates showed up live. Keeping messages in order got tricky, and so did reconnecting after a dropped connection.',
+    role: 'I set up the MongoDB backend and its hosting. I built login and sessions with salted password hashing. I also added message editing, live user status, and auto-reconnect, plus the backend tests.',
     demoLink: 'https://fibersync-fd2e2.web.app/',
     repoLink: 'https://github.com/cadendengel/FiberSync/',
     image: '/img/fibersync-preview.jpg'
   },
   {
     id: 'meal-prep-pantry',
+    featured: true,
     title: 'Meal Prep Pantry',
-    summary: 'A full-stack web application that automates meal planning using grocery store product data.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Tesseract.js', 'Vercel'],
-    keyFeatures: ['Recipe storage', 'Ingredient tracking', 'OCR processing', 'Cost calculation', 'Macro tracking'],
-    challenge: 'Handling OCR on different websites with different file/text formats for storing nutrition labels required building a flexible parsing system that could adapt to various label layouts and data structures depending on the source.',
+    summary: 'A meal builder that tracks macros and cost using real grocery store product data.',
+    tech: ['React', 'Vite', 'Node.js', 'Vercel Serverless', 'MongoDB Atlas', 'Tesseract.js', 'JWT', 'Vitest', 'Playwright'],
+    keyFeatures: ['Save an ingredient once, reuse it in any meal', 'Scan a nutrition label or look up a barcode', 'Macros per meal and per serving', 'Tracks what each meal costs', 'Shopping list grouped by store'],
+    challenge: 'Nutrition labels come in a lot of layouts, and OCR text comes out messy. Getting the right numbers out of all of them took a lot of parser work.',
     demoLink: 'https://meal-prep-pantry.vercel.app/',
     repoLink: 'https://github.com/cadendengel/meal-prep-pantry/',
     image: '/img/meal-prep-pantry-preview.jpg'
   },
   {
     id: 'visionary',
+    featured: true,
     title: 'Visionary',
-    summary: 'Computer vision system utilizing YOLOv5 for real-time object detection and tracking with servo-controlled laser pointer.',
-    tech: ['Python', 'OpenCV', 'YOLOv5', '3D Printing', 'Arduino'],
-    keyFeatures: ['Real-time object detection', 'Servo motor control', 'Video stream processing', 'Multi-object tracking', 'Hardware integration'],
-    challenge: 'Achieving real-time detection while simultaneously controlling servo motors required optimizing the inference pipeline and implementing precise timing mechanisms to sync vision processing with hardware commands.',
+    summary: 'A camera on a pan/tilt mount that detects and tracks objects in real time with YOLOv8 and points a laser at them.',
+    tech: ['Python', 'OpenCV', 'YOLOv8', 'DeepSORT', 'Arduino', 'Tkinter', 'OpenAI API', '3D Printing'],
+    keyFeatures: ['Tracks multiple objects at once', 'Pan/tilt servos and a laser, run from an Arduino', 'Desktop control panel', 'Scene narration with the OpenAI API (never finished)'],
+    challenge: 'Detection had to stay fast while the servos moved. If it lagged, the laser ended up behind the target.',
+    role: 'I worked on the hardware side of the build. It was a four-person team project.',
     repoLink: 'https://github.com/CSC121-TXST/CS4398-Grp3-Visionary',
     image: '/img/visionary-preview.jpg'
   },
   {
     id: 'pricewatch',
+    featured: true,
     title: 'PriceWatch',
-    summary: 'A personal AI agent that hunts deals on PC parts around the clock and keeps a live dashboard of the best prices.',
-    tech: ['Claude Code', 'AI Agents', 'Python', 'eBay API', 'RSS'],
-    keyFeatures: ['Hourly price checks', 'Daily full sweep', 'Deal feeds, marketplaces, and retailers', 'Filters out junk listings', 'Live price dashboard'],
-    challenge: 'Most "deals" are noise: for-parts listings, ended auctions, out-of-stock items, and last-gen parts. The hard part was teaching the agent strict rules for what counts as a real deal so the dashboard only shows things worth buying.',
+    summary: 'A personal AI agent that checks PC part prices every hour during the day and keeps a live dashboard of the best ones.',
+    tech: ['Claude Code', 'AI Agents', 'Python', 'eBay API', 'RSS', 'Claude Artifacts'],
+    keyFeatures: ['Quick check every hour, full sweep once a day', 'Checks Slickdeals and eBay, plus retailers on the daily sweep', 'Throws out broken and bid-only listings', 'Live dashboard'],
+    challenge: "Most deals aren't real deals. For-parts listings, ended auctions, out-of-stock items, and old parts all show up. I gave the agent strict rules so the dashboard only shows stuff worth buying.",
     image: '/img/pricewatch-preview.jpg'
+  },
+  {
+    id: 'sonar',
+    featured: true,
+    title: 'Sonar',
+    summary: 'A tool I built at work that pulls public government data to find companies worth contacting.',
+    tech: ['Python', 'SQLite', 'Public APIs', 'Claude Code'],
+    keyFeatures: ['Scores every lead and shows why', 'Flags companies that just started hiring engineers', 'Uses only free public data'],
+    challenge: 'Public data rarely says whether a company needs help. I wrote clear rules for who qualifies. Companies with no data get marked as unjudged, not rejected.'
+  },
+  {
+    id: 'mle',
+    title: 'MLE Healthcare Extension',
+    summary: 'Extended a research project that runs machine learning predictions on encrypted data, adding financial and academic datasets alongside healthcare.',
+    tech: ['C#', '.NET', 'Microsoft SEAL', 'Windows Forms', 'Python', 'Scikit-learn', 'Pandas', 'NumPy'],
+    keyFeatures: ['Runs predictions without decrypting the data', 'Healthcare model plus two new ones (financial and academic)', 'Desktop app that walks through each step'],
+    challenge: 'Encrypted data limits what a model can do. New datasets had to be normalized first, and the model had to stay simple enough to run on encrypted values.',
+    role: 'I tested a lot of different models locally to find one that would work on encrypted data. We ended up going with logistic regression.',
+    repoLink: 'https://github.com/A-J21/Healthcare-Security-Analysis-MLE-Extension'
+  },
+  {
+    id: 'eng3303proj4',
+    title: 'GitHub Accessibility Redesign',
+    summary: "Rebuilt a GitHub repo page so it's easier to use with a keyboard or a screen reader.",
+    tech: ['HTML', 'CSS', 'JavaScript', 'AWS S3', 'Web Accessibility'],
+    keyFeatures: ['Full keyboard navigation', 'ARIA labels for screen readers', 'Better color contrast', 'Semantic HTML'],
+    challenge: "You can't tell if a page works with a screen reader until you use one. Testing with assistive tech is what showed the real problems.",
+    demoLink: 'https://eng3303proj4.s3.us-east-2.amazonaws.com/src/index.html'
   },
 ];
 
+const featuredProjects = projects.filter((project) => project.featured);
+const projectsById = Object.fromEntries(projects.map((project) => [project.id, project]));
+
 const thenNow = {
   then: [
-    { text: 'Hand-wrote full-stack apps line by line in React, Node.js, and MongoDB', project: 'FiberSync, Meal Prep Pantry' },
-    { text: 'Trained and tuned computer-vision models in Python', project: 'Visionary' },
-    { text: 'Systems and object-oriented coursework in C++ and Java' },
-    { text: 'Tested by clicking through every screen and writing bug reports from scratch' },
+    { text: 'Built full-stack apps by hand in React, Node.js, Python, and MongoDB', projects: ['fibersync', 'meal-prep-pantry'] },
+    { text: 'Built real-time object tracking in Python with YOLOv8 and Arduino', projects: ['visionary'] },
+    { text: 'Added machine learning support to an encryption project in Python and C#', projects: ['mle'] },
+    { text: 'Wrote C++ and Java for school and personal projects' },
+    { text: 'Tested everything by hand and wrote every bug report myself' },
     { text: 'Deployed by hand and debugged with print statements' },
   ],
   now: [
-    { text: 'Design the system, direct AI agents to build it, and review every line they write' },
-    { text: 'AI-integrated QA: nearly 3× more tickets tested per day, with half as many approvals bouncing back', highlight: true },
-    { text: 'Build tools that make agents better at real work: plugins, integrations, and automated test runs' },
-    { text: 'Run AI agents that work for me in the background', project: 'PriceWatch' },
-    { text: 'Automate the boring parts: CI/CD, serverless cloud, and infrastructure as code', project: 'this site' },
+    { text: 'Have AI agents write the code, then review all of it' },
+    { text: 'Handle QA for every client project at work, around 150 tickets per month', highlight: true },
+    { text: 'Build tools and plugins that help agents do real work' },
+    { text: 'Build data tools that pull from dozens of public sources', projects: ['sonar'] },
+    { text: 'Run AI agents that work for me in the background', projects: ['pricewatch'] },
+    { text: 'Automate deploys with CI/CD, serverless, and infrastructure as code', link: { label: 'this site', href: 'https://github.com/cadendengel/cadendengel' } },
+    { text: '*And much more!' },
   ],
 };
 
 const emailAddress = 'caden.d.dengel@gmail.com';
 const mailtoLink = `mailto:${emailAddress}`;
+
+const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+// Scrolls slower than the browser's built-in smooth scroll; resolves when it lands
+const smoothScrollTo = (element, fixedDuration) => new Promise((resolve) => {
+  if (!element) {
+    resolve();
+    return;
+  }
+
+  const startY = window.scrollY;
+  const maxY = document.documentElement.scrollHeight - window.innerHeight;
+  const targetY = Math.min(element.getBoundingClientRect().top + startY, maxY);
+  const distance = targetY - startY;
+
+  if (Math.abs(distance) < 2) {
+    window.scrollTo(0, targetY);
+    resolve();
+    return;
+  }
+
+  const duration = fixedDuration ?? Math.min(Math.max(Math.abs(distance) * 0.585, 675), 1170);
+  const startTime = performance.now();
+
+  const step = (now) => {
+    const progress = Math.min((now - startTime) / duration, 1);
+    window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      resolve();
+    }
+  };
+
+  window.requestAnimationFrame(step);
+});
 
 const getInitialTheme = () =>
   localStorage.getItem('theme') ||
@@ -71,7 +147,7 @@ const getInitialTheme = () =>
 
 function App() {
   const [theme, setTheme] = useState(getInitialTheme);
-  const [highlightContact, setHighlightContact] = useState(false);
+  const [emailNudgeKey, setEmailNudgeKey] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [rawPageLoadCount, setRawPageLoadCount] = useState(null);
   const [uniqueSessionCount, setUniqueSessionCount] = useState(null);
@@ -84,7 +160,7 @@ function App() {
   const lastFocusedElementRef = useRef(null);
   const uniqueTechCount = new Set(projects.flatMap((project) => project.tech)).size;
   const portfolioSnapshot = [
-    { label: 'Projects Featured', value: projects.length.toLocaleString() },
+    { label: 'Projects', value: projects.length.toLocaleString() },
     { label: 'Technologies Used', value: uniqueTechCount.toLocaleString() },
   ];
 
@@ -284,16 +360,44 @@ function App() {
     };
   }, []);
 
-  const handleGetInTouchClick = (e) => {
+  const handleViewWorkClick = (e) => {
     e.preventDefault();
-    const contactSection = document.getElementById('contact');
-    contactSection?.scrollIntoView({ behavior: 'smooth' });
-    
-    // Wait for scroll to complete before triggering highlight
-    setTimeout(() => {
-      setHighlightContact(true);
-      setTimeout(() => setHighlightContact(false), 2000);
-    }, 800);
+    smoothScrollTo(document.getElementById('projects'));
+  };
+
+  const handleGetInTouchClick = async (e) => {
+    e.preventDefault();
+    await smoothScrollTo(document.getElementById('contact'), 1000);
+    setEmailNudgeKey((key) => key + 1);
+  };
+
+  const handleProjectLinkClick = (e, projectId) => {
+    e.preventDefault();
+    openProjectDetails(projectsById[projectId]);
+  };
+
+  const renderThenNowRefs = (item) => {
+    if (item.link) {
+      return (
+        <span className="then-now-project">
+          {' → '}
+          <a href={item.link.href} target="_blank" rel="noreferrer">{item.link.label}</a>
+        </span>
+      );
+    }
+    if (!item.projects) return null;
+
+    return (
+      <span className="then-now-project">
+        {' → '}
+        {item.projects.map((projectId, i) => (
+          <Fragment key={projectId}>
+            {i > 0 && ', '}
+            <a href={`#project-${projectId}`} onClick={(e) => handleProjectLinkClick(e, projectId)}>{projectsById[projectId].title}</a>
+          </Fragment>
+        ))}
+      </span>
+    );
   };
 
   return (
@@ -320,19 +424,19 @@ function App() {
         <section className="hero" style={{ '--hero-scroll': heroScrollProgress }}>
           <div className="container hero-grid">
             <div className="hero-text">
-              <p className="hero-kicker">Full-Stack Developer</p>
+              <p className="hero-kicker">Software Engineer &amp; QA</p>
               <h2 className="hero-headline">
                 Hi, I&apos;m <span>Caden Dengel</span>.
                 <br />
-                I build web applications and the infrastructure that runs them.
+                I build and test software with AI agents.
               </h2>
-              <p className="lead">My projects focus on solving practical problems, like automating personal tasks, building full-stack tools, and deploying software using modern cloud infrastructure.</p>
-              <p className="lead">I enjoy working across the stack: designing APIs, building intuitive interfaces, and figuring out how to deploy systems reliably.</p>
+              <p className="lead">I build full-stack apps and the infrastructure that runs them. These days I build most of it with AI agents, and then I make sure it actually works.</p>
+              <p className="lead">At work I set up AI agents to help with QA testing. With them, I handle QA for all of our client projects, around 150 tickets per month. My estimated capacity is around 400 to 500 tickets per month.</p>
               <div className="hero-meta">
-                <span className="location">San Marcos/Kyle/South Austin, TX Area</span>
+                <span className="location">San Antonio/Austin, TX Area</span>
               </div>
               <p>
-                <a className="primary-btn" href="#projects">View My Work</a>
+                <a className="primary-btn" href="#projects" onClick={handleViewWorkClick}>View My Work</a>
                 <a className="secondary-btn" href="#contact" onClick={handleGetInTouchClick}>Get In Touch</a>
               </p>
               <p className="socials">
@@ -351,15 +455,15 @@ function App() {
         </section>
 
         <section id="skills" className="container skills">
-          <h3>Then &amp; Now</h3>
+          <h3>How I Work</h3>
           <div className="then-now-grid">
             <div className="skill-category">
-              <h4>What I used to do <span className="then-now-era">(through 2025)</span></h4>
+              <h4>Where I started</h4>
               <ul className="then-now-list">
                 {thenNow.then.map(item => (
                   <li key={item.text}>
                     {item.text}
-                    {item.project && <span className="then-now-project"> → {item.project}</span>}
+                    {renderThenNowRefs(item)}
                   </li>
                 ))}
               </ul>
@@ -370,7 +474,7 @@ function App() {
                 {thenNow.now.map(item => (
                   <li key={item.text} className={item.highlight ? 'then-now-highlight' : undefined}>
                     {item.text}
-                    {item.project && <span className="then-now-project"> → {item.project}</span>}
+                    {renderThenNowRefs(item)}
                   </li>
                 ))}
               </ul>
@@ -381,10 +485,12 @@ function App() {
         <section id="projects" className="container projects">
           <h3>Projects</h3>
           <div className="project-list">
-            {projects.map(p => (
-              <article key={p.id} className="project-card">
+            {featuredProjects.map(p => (
+              <article key={p.id} id={`project-${p.id}`} className="project-card" onClick={() => openProjectDetails(p)}>
                 <div className="project-image-wrap">
-                  {p.image && <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />}
+                  {p.image
+                    ? <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" onError={(e) => e.target.style.display = 'none'} />
+                    : <span className="project-image-placeholder">{p.title}</span>}
                   <div className="project-image-overlay">
                     <span>Project Preview</span>
                   </div>
@@ -392,7 +498,7 @@ function App() {
                 <div className="project-card-body">
                   <h4 className="project-title">{p.title}</h4>
                   <p className="project-summary">{p.summary}</p>
-                  <button className="project-details-btn" onClick={() => openProjectDetails(p)} aria-label={`View details for ${p.title}`}>View Details →</button>
+                  <button className="project-details-btn" aria-label={`View details for ${p.title}`}>View Details →</button>
                 </div>
               </article>
             ))}
@@ -433,6 +539,13 @@ function App() {
                 <p className="modal-challenge">{selectedProject.challenge}</p>
               </div>
 
+              {selectedProject.role && (
+                <div className="modal-section">
+                  <h4>My Part</h4>
+                  <p className="modal-challenge">{selectedProject.role}</p>
+                </div>
+              )}
+
               {(selectedProject.demoLink || selectedProject.repoLink) && (
                 <div className="modal-section">
                   <h4>Links</h4>
@@ -454,8 +567,10 @@ function App() {
           <div className="container about-layout">
             <div className="about-content">
               <h3>About Me</h3>
-              <p>I&apos;m a Computer Science graduate from Texas State University (December 2025). I&apos;m a full-stack developer with hands-on experience building modern web applications using React, Node.js, and MongoDB. Throughout my academic journey and personal projects, I&apos;ve built multiple deployed applications, including a real-time messaging platform and computer vision systems.</p>
-              <p>My approach combines strong problem-solving skills with attention to detail, whether I&apos;m designing intuitive user interfaces or building scalable backend systems. Beyond web development, I have experience with Python for machine learning projects, C++ for systems programming, and Java for object-oriented design.</p>
+              <p>I graduated from Texas State University with a CS degree in December 2025. I started out as a full-stack developer, mostly React, Node.js, Python, and MongoDB, plus C++ and Java from school and side projects.</p>
+              <p>Now I&apos;m a software engineer focused on QA, and I don&apos;t write much code by hand anymore. Since I work with AI agents, I&apos;m not tied to one stack. I can work in whatever framework or language a project uses.</p>
+              <p>I want to see how much I can hand off to agents, and I build whatever tools I need along the way. If something turns out useful, I clean it up and share it.</p>
+              <p>Outside of work, I like building PCs and messing with hardware. I built PriceWatch to find deals on parts for my current PC. I also like to play guitar, work out, read, and cook.</p>
             </div>
 
             <aside className="traffic-card" aria-live="polite">
@@ -509,14 +624,28 @@ function App() {
 
       </main>
 
-      <footer className={`site-footer ${highlightContact ? 'highlight' : ''}`} id="contact">
+      <footer className="site-footer" id="contact">
         <div className="container footer-content">
           <div className="footer-contact">
             <span className="footer-label">Get In Touch</span>
-            <a className="footer-email" href={mailtoLink}>{emailAddress}</a>
+            <span className="footer-email-wrap">
+              {emailNudgeKey > 0 && (
+                <span
+                  key={emailNudgeKey}
+                  className="email-nudge"
+                  role="status"
+                  onAnimationEnd={(e) => {
+                    if (e.animationName === 'email-nudge-life' || e.animationName === 'email-nudge-fade') setEmailNudgeKey(0);
+                  }}
+                >
+                  Send me an email here!
+                </span>
+              )}
+              <a className="footer-email" href={mailtoLink}>{emailAddress}</a>
+            </span>
           </div>
           <div className="footer-location">
-            San Marcos/Kyle/South Austin, TX Area
+            San Antonio/Austin, TX Area
           </div>
           <small>© {new Date().getFullYear()} Caden Dengel. All rights reserved.</small>
         </div>
